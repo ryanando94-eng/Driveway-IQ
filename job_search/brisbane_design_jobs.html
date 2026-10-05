@@ -1,0 +1,1590 @@
+<title>Brisbane Design Jobs</title>
+<meta name="description" content="Job search hub for building design, drafting, Archicad, drafting/design management and product development roles in Brisbane and South East Queensland.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a drawing sheet. Titleblock header, sheet-number tabs, then each sheet's own grid
+   (search = controls rail + output, tracker = stage columns). Light = whiteprint, dark = blueprint. */
+:root {
+  --paper: #F1F4F6;
+  --sheet: #FFFFFF;
+  --ink: #13202C;
+  --ink-2: #465767;
+  --ink-3: #6F8090;
+  --rule: #C5D0D8;
+  --rule-soft: #E1E7EB;
+  --grid: rgba(29, 91, 149, 0.07);
+  --blue: #1D5B95;
+  --blue-ink: #164A7A;
+  --blue-wash: #E5EEF7;
+  --on-blue: #FFFFFF;
+  --red: #BF3A20;
+  --red-wash: #FBECE7;
+  --ok: #2A7647;
+  --ok-wash: #E3F2E8;
+  --warn: #8F5B00;
+  --warn-wash: #FAF0DA;
+  --shadow: 0 1px 0 rgba(19, 32, 44, .04), 0 8px 20px -14px rgba(19, 32, 44, .35);
+  --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Barlow", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --r: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0A1A2B; --sheet: #0E2339; --ink: #E3ECF4; --ink-2: #AABCCD; --ink-3: #8098AD;
+    --rule: #2A4867; --rule-soft: #1A3450; --grid: rgba(160, 200, 240, 0.075);
+    --blue: #8DC3F2; --blue-ink: #B9DAF8; --blue-wash: #15385C; --on-blue: #0A1A2B;
+    --red: #FF8F78; --red-wash: #3A2028; --ok: #78D3A0; --ok-wash: #15392A;
+    --warn: #F1BE62; --warn-wash: #392E16;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .25), 0 10px 22px -14px rgba(0, 0, 0, .7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0A1A2B; --sheet: #0E2339; --ink: #E3ECF4; --ink-2: #AABCCD; --ink-3: #8098AD;
+  --rule: #2A4867; --rule-soft: #1A3450; --grid: rgba(160, 200, 240, 0.075);
+  --blue: #8DC3F2; --blue-ink: #B9DAF8; --blue-wash: #15385C; --on-blue: #0A1A2B;
+  --red: #FF8F78; --red-wash: #3A2028; --ok: #78D3A0; --ok-wash: #15392A;
+  --warn: #F1BE62; --warn-wash: #392E16;
+  --shadow: 0 1px 0 rgba(0, 0, 0, .25), 0 10px 22px -14px rgba(0, 0, 0, .7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font: 400 15px/1.5 var(--f-body);
+}
+a { color: var(--blue); text-underline-offset: 2px; }
+a:hover { color: var(--blue-ink); }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 3px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h2 {
+  font: 600 15px/1.2 var(--f-display);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-2);
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+.page { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 40px; }
+@media (min-width: 760px) { .page { padding-inline: 28px; } }
+
+/* ---------- titleblock ---------- */
+.titleblock {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border: 1.5px solid var(--ink);
+  background: var(--sheet);
+  box-shadow: var(--shadow);
+}
+@media (min-width: 900px) { .titleblock { grid-template-columns: minmax(0, 1fr) auto; } }
+.tb-name { padding: 18px 20px 16px; min-width: 0; }
+.eyebrow {
+  font: 500 12px/1.3 var(--f-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+h1 {
+  font: 700 clamp(34px, 6vw, 52px)/0.95 var(--f-display);
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+h1 .accent { color: var(--blue); }
+.lede { margin: 10px 0 0; color: var(--ink-2); max-width: 64ch; }
+.tb-cells {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  border-top: 1.5px solid var(--ink);
+}
+@media (min-width: 560px) { .tb-cells { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 900px) {
+  .tb-cells { grid-template-columns: repeat(2, minmax(110px, 1fr)); border-top: 0; border-left: 1.5px solid var(--ink); }
+}
+.tb-cells > div { padding: 10px 14px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.tb-cells dt { font: 500 11px/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); }
+.tb-cells dd { margin: 4px 0 0; font: 600 24px/1.1 var(--f-display); font-variant-numeric: tabular-nums; }
+
+/* ---------- sheet tabs ---------- */
+.sheets {
+  display: flex;
+  gap: 0;
+  margin-top: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1.5px solid var(--ink);
+}
+.sheets::-webkit-scrollbar { display: none; }
+.sheets button {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 1px;
+  text-align: left;
+  padding: 8px 16px 9px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: var(--r) var(--r) 0 0;
+  cursor: pointer;
+  color: var(--ink-2);
+  font: 600 17px/1.15 var(--f-display);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.sheets button .no { font: 500 11px/1.2 var(--f-mono); letter-spacing: .06em; color: var(--ink-3); }
+.sheets button:hover { color: var(--ink); }
+.sheets button[aria-selected="true"] {
+  background: var(--sheet);
+  border-color: var(--ink);
+  border-width: 1.5px 1.5px 0;
+  margin-bottom: -1.5px;
+  color: var(--ink);
+}
+.sheets button[aria-selected="true"] .no { color: var(--blue); }
+.sheets .badge-n {
+  display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 9px;
+  background: var(--red); color: var(--sheet); font: 600 11px/1.6 var(--f-mono); vertical-align: 2px;
+}
+
+.sheet { padding-top: 20px; }
+.sheet[hidden] { display: none !important; }
+.sheet-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; }
+.sheet-h h2 { font-size: 22px; letter-spacing: .05em; color: var(--ink); }
+.sheet-h p { margin: 0; color: var(--ink-2); max-width: 70ch; }
+
+/* ---------- shared controls ---------- */
+.panel { background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 36px; padding: 6px 14px;
+  border: 1px solid var(--rule); border-radius: var(--r);
+  background: var(--sheet); color: var(--ink);
+  font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer; white-space: nowrap;
+}
+.btn:hover { border-color: var(--blue); color: var(--blue-ink); }
+.btn.primary { background: var(--blue); border-color: var(--blue); color: var(--on-blue); }
+.btn.primary:hover { filter: brightness(1.08); color: var(--on-blue); }
+.btn.small { min-height: 30px; padding: 3px 10px; font-size: 13px; }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--blue); padding-inline: 6px; }
+.btn.ghost:hover { text-decoration: underline; }
+.btn.danger { color: var(--red); }
+.btn[disabled] { opacity: .5; cursor: default; }
+label.f { display: block; font: 500 12px/1.3 var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 12px 0 5px; }
+input[type="text"], input[type="search"], input[type="url"], input[type="date"], select, textarea {
+  width: 100%;
+  min-height: 38px;
+  padding: 7px 10px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  background: var(--sheet);
+  font-size: 15px;
+}
+textarea { resize: vertical; line-height: 1.5; }
+input:focus, select:focus, textarea:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px var(--blue-wash); }
+.hint { font-size: 13px; color: var(--ink-3); margin: 6px 0 0; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px 4px;
+  border: 1px solid var(--rule); border-radius: 999px;
+  background: var(--sheet); color: var(--ink-2);
+  font-size: 13.5px; line-height: 1.35; cursor: pointer;
+}
+.chip::before { content: "+"; font: 500 12px/1 var(--f-mono); color: var(--ink-3); }
+.chip[aria-pressed="true"] { background: var(--blue-wash); border-color: var(--blue); color: var(--blue-ink); }
+.chip[aria-pressed="true"]::before { content: "✓"; color: var(--blue); }
+.chip:hover { border-color: var(--blue); }
+
+.seg { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--rule); border-radius: var(--r); overflow: hidden; background: var(--sheet); }
+.seg button {
+  flex: 1 1 auto; padding: 7px 10px; border: 0; border-right: 1px solid var(--rule);
+  background: transparent; color: var(--ink-2); font-size: 13.5px; font-weight: 500; cursor: pointer; white-space: nowrap;
+}
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--blue); color: var(--on-blue); }
+.seg.wrap { border: 0; gap: 6px; overflow: visible; background: transparent; }
+.seg.wrap button { flex: 0 0 auto; border: 1px solid var(--rule); border-radius: 999px; background: var(--sheet); }
+.seg.wrap button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); }
+
+.pill { display: inline-block; padding: 1px 8px 2px; border-radius: 999px; font: 500 11.5px/1.5 var(--f-mono); letter-spacing: .02em; white-space: nowrap; }
+.pill.seen { background: var(--warn-wash); color: var(--warn); }
+.pill.ok { background: var(--ok-wash); color: var(--ok); }
+.pill.new { background: var(--red-wash); color: var(--red); }
+.pill.muted { background: var(--rule-soft); color: var(--ink-2); }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  background: var(--ink); color: var(--sheet); padding: 9px 16px; border-radius: var(--r);
+  font-size: 14px; box-shadow: var(--shadow); z-index: 20; max-width: calc(100vw - 32px);
+}
+
+/* ---------- search sheet ---------- */
+.search-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (min-width: 980px) { .search-grid { grid-template-columns: 360px minmax(0, 1fr); } }
+.rail { display: grid; gap: 14px; min-width: 0; }
+.rail .panel { padding: 14px 16px 16px; }
+.block-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.grp { border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 10px; }
+.grp:first-of-type { border-top: 0; margin-top: 8px; padding-top: 0; }
+.grp-h { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; margin-bottom: 7px; }
+.grp-h input { width: 17px; height: 17px; accent-color: var(--blue); margin: 0; }
+.grp-h .count { margin-left: auto; font: 500 12px/1 var(--f-mono); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.grp.off .chips { opacity: .45; }
+.row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+
+.out { display: grid; gap: 16px; min-width: 0; }
+/* Phones: results first, filters after (with a jump link in the summary) */
+@media (max-width: 979px) { .out { order: -1; } }
+.jump { display: inline; margin-left: 4px; }
+@media (min-width: 980px) { .jump { display: none; } }
+.summary {
+  padding: 12px 16px; background: var(--sheet); border: 1px solid var(--rule); border-left: 4px solid var(--blue);
+  border-radius: var(--r); color: var(--ink-2);
+}
+.summary b { color: var(--ink); font-weight: 600; }
+.query { padding: 12px 16px 14px; }
+.query-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.query code {
+  display: block; font: 400 13px/1.55 var(--f-mono); color: var(--ink);
+  background: var(--paper); border: 1px dashed var(--rule); border-radius: 4px; padding: 8px 10px;
+  word-break: break-word; max-height: 9.5em; overflow: auto;
+}
+.matrix-wrap { overflow-x: auto; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); }
+table.matrix { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; }
+.matrix th, .matrix td { border-bottom: 1px solid var(--rule-soft); padding: 9px 10px; text-align: left; vertical-align: middle; }
+.matrix thead th { font: 600 13px/1.2 var(--f-display); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-2); background: var(--paper); border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.matrix thead th small { display: block; font: 400 11px/1.3 var(--f-mono); text-transform: none; letter-spacing: 0; color: var(--ink-3); margin-top: 2px; }
+.matrix tbody th { font-weight: 600; min-width: 170px; position: sticky; left: 0; background: var(--sheet); z-index: 1; }
+.matrix tbody th small { display: block; font: 400 12px/1.3 var(--f-mono); color: var(--ink-3); }
+.matrix tbody tr.all th, .matrix tbody tr.all td { background: var(--blue-wash); }
+.matrix td a.go {
+  display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border: 1px solid var(--rule);
+  border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 13px; white-space: nowrap; background: var(--sheet);
+}
+.matrix td a.go:hover { border-color: var(--blue); }
+.matrix td a.go::after { content: "↗"; font-size: 11px; }
+.matrix td .na { color: var(--ink-3); font-size: 12px; white-space: nowrap; }
+.matrix td { vertical-align: top; }
+.matrix details.each summary {
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px;
+  border: 1px solid var(--rule); border-radius: 4px; font-weight: 600; font-size: 13px; color: var(--blue);
+  white-space: nowrap; background: var(--sheet);
+}
+.matrix details.each summary::-webkit-details-marker { display: none; }
+.matrix details.each summary::after { content: "▾"; font-size: 11px; }
+.matrix details.each[open] summary::after { content: "▴"; }
+.matrix details.each summary:hover { border-color: var(--blue); }
+.each-list { display: grid; gap: 5px; margin-top: 7px; font-size: 13px; }
+.each-list a { white-space: nowrap; }
+.more { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 10px; }
+.more a.card {
+  display: grid; gap: 3px; padding: 11px 13px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r);
+  text-decoration: none; color: var(--ink); min-width: 0;
+}
+.more a.card:hover { border-color: var(--blue); }
+.more a.card b { color: var(--blue); font-weight: 600; }
+.more a.card span { font-size: 13px; color: var(--ink-2); }
+.more a.card em { font: normal 500 11px/1.3 var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+details.howto { padding: 12px 16px; }
+details.howto summary { cursor: pointer; font-weight: 600; }
+details.howto ol { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; color: var(--ink-2); }
+
+/* ---------- leads ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-bottom: 14px; }
+.leads { display: grid; gap: 10px; }
+.lead {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 18px;
+  padding: 14px 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r);
+}
+@media (min-width: 760px) { .lead { grid-template-columns: minmax(0, 1fr) 250px; } }
+.lead h3 { font: 600 19px/1.2 var(--f-display); letter-spacing: .01em; }
+.lead h3 a { color: var(--ink); text-decoration: none; }
+.lead h3 a:hover { color: var(--blue); text-decoration: underline; }
+.lead .co { font-weight: 600; color: var(--ink-2); margin-top: 2px; }
+.lead .meta { font-size: 13.5px; color: var(--ink-2); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.lead .meta .sal { color: var(--ok); font-weight: 600; }
+.lead .note { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); }
+.lead .side { display: grid; gap: 8px; align-content: start; justify-items: start; }
+@media (min-width: 760px) { .lead .side { justify-items: end; text-align: right; } }
+.lead .when { font: 500 12.5px/1.35 var(--f-mono); color: var(--ink-3); }
+.lead .acts { display: flex; flex-wrap: wrap; gap: 6px; }
+@media (min-width: 760px) { .lead .acts { justify-content: flex-end; } }
+.empty {
+  padding: 26px 20px; border: 1.5px dashed var(--rule); border-radius: var(--r); background: var(--sheet);
+  color: var(--ink-2); text-align: center;
+}
+.empty b { display: block; color: var(--ink); font: 600 18px/1.3 var(--f-display); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+
+/* ---------- tracker ---------- */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 8px; margin-bottom: 14px; }
+.stat { padding: 10px 12px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); }
+.stat dt { font: 500 11px/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); }
+.stat dd { margin: 4px 0 0; font: 600 26px/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.stat.alert { border-color: var(--red); }
+.stat.alert dd { color: var(--red); }
+.store-badge { font: 500 12px/1.3 var(--f-mono); color: var(--ink-3); }
+.store-badge::before { content: "●"; margin-right: 6px; color: var(--ok); }
+.store-badge.local::before { color: var(--warn); }
+form.jobform { padding: 14px 16px 16px; margin-bottom: 16px; }
+.form-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 14px; }
+@media (min-width: 700px) { .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .form-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.form-grid .span2 { grid-column: span 1; }
+@media (min-width: 700px) { .form-grid .span2 { grid-column: span 2; } }
+.form-grid .full { grid-column: 1 / -1; }
+.form-acts { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.board { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
+@media (min-width: 700px) { .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1150px) { .board { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.col { background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); min-width: 0; }
+.col-h { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 12px; border-bottom: 1.5px solid var(--ink); }
+.col-h h3 { font: 600 15px/1.2 var(--f-display); text-transform: uppercase; letter-spacing: .07em; }
+.col-h span { font: 500 12px/1 var(--f-mono); color: var(--ink-3); }
+.col-body { display: grid; gap: 8px; padding: 10px; }
+.col-empty { font-size: 13px; color: var(--ink-3); padding: 4px 2px; }
+.job { border: 1px solid var(--rule-soft); border-radius: 5px; padding: 10px 11px; background: var(--paper); min-width: 0; }
+.job h4 { margin: 0; font-size: 15px; line-height: 1.3; font-weight: 600; overflow-wrap: anywhere; }
+.job h4 a { color: var(--ink); }
+.job .co { font-size: 13.5px; color: var(--ink-2); margin-top: 2px; overflow-wrap: anywhere; }
+.job .dates { font: 400 12px/1.5 var(--f-mono); color: var(--ink-3); margin-top: 6px; }
+.job .dates .due { color: var(--red); font-weight: 500; }
+.job .notes { font-size: 13px; color: var(--ink-2); margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; }
+.job .job-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; align-items: center; }
+.job select { width: auto; min-height: 30px; padding: 2px 6px; font-size: 13px; }
+.job .confirm { font-size: 13px; color: var(--red); }
+
+/* ---------- directory ---------- */
+.dir-tools { display: grid; gap: 10px; margin-bottom: 16px; }
+.dir-sec { margin-bottom: 22px; }
+.dir-sec > h2 { margin-bottom: 8px; display: flex; gap: 10px; align-items: baseline; }
+.dir-sec > h2 span { font: 400 12px/1 var(--f-mono); letter-spacing: 0; text-transform: none; color: var(--ink-3); }
+.dir-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 8px; }
+.ent { padding: 11px 13px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); display: grid; gap: 4px; min-width: 0; }
+.ent b { font-weight: 600; }
+.ent p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+.ent .links { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13.5px; font-weight: 600; margin-top: 2px; }
+
+/* ---------- ad check ---------- */
+.ad-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (min-width: 980px) { .ad-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.ad-grid textarea#adText { min-height: 360px; font-size: 14px; }
+.fit { padding: 16px; display: grid; gap: 14px; }
+.meter { display: grid; gap: 6px; }
+.meter-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.meter-top b { font: 700 40px/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.meter-bar { height: 10px; background: var(--rule-soft); border-radius: 5px; overflow: hidden; }
+.meter-bar i { display: block; height: 100%; background: var(--blue); width: 0; transition: width .25s ease; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 8px; margin: 0; }
+.facts div { padding: 8px 10px; border: 1px solid var(--rule-soft); border-radius: 5px; background: var(--paper); min-width: 0; }
+.facts dt { font: 500 11px/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+.facts dd { margin: 3px 0 0; font-weight: 600; overflow-wrap: anywhere; }
+.taglist { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { padding: 2px 9px 3px; border-radius: 4px; font-size: 13.5px; border: 1px solid var(--rule); background: var(--sheet); }
+.tag.have { border-color: var(--ok); color: var(--ok); background: var(--ok-wash); }
+.tag.gap { border-color: var(--red); color: var(--red); background: var(--red-wash); }
+.ai { padding: 16px; display: grid; gap: 10px; }
+.ai-out { white-space: pre-wrap; font-size: 14.5px; line-height: 1.55; background: var(--paper); border: 1px dashed var(--rule); border-radius: 5px; padding: 12px; min-height: 3em; }
+.ai-out:empty { display: none; }
+
+footer.foot { margin-top: 34px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 6px 22px; justify-content: space-between; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="page">
+  <header class="titleblock">
+    <div class="tb-name">
+      <div class="eyebrow">Job search · Brisbane &amp; South East Queensland</div>
+      <h1>Brisbane <span class="accent">Design</span> Jobs</h1>
+      <p class="lede">Building design, drafting, Archicad, drafting and design management, and product development roles. Search every major board, the industry boards, and the builders and recruiters who hire for these roles, then track your applications.</p>
+    </div>
+    <dl class="tb-cells">
+      <div><dt>Boards</dt><dd id="tbBoards">–</dd></div>
+      <div><dt>Employers</dt><dd id="tbEmployers">–</dd></div>
+      <div><dt>Live leads</dt><dd id="tbLeads">–</dd></div>
+      <div><dt>Today</dt><dd id="tbDate">–</dd></div>
+    </dl>
+  </header>
+
+  <nav class="sheets" role="tablist" aria-label="Sheets">
+    <button role="tab" id="tab-search" data-sheet="search" aria-controls="sheet-search" aria-selected="true"><span class="no">A-101</span>Search</button>
+    <button role="tab" id="tab-leads" data-sheet="leads" aria-controls="sheet-leads" aria-selected="false"><span class="no">A-102</span><span>Live leads<span id="leadsBadge"></span></span></button>
+    <button role="tab" id="tab-tracker" data-sheet="tracker" aria-controls="sheet-tracker" aria-selected="false"><span class="no">A-103</span>My applications</button>
+    <button role="tab" id="tab-directory" data-sheet="directory" aria-controls="sheet-directory" aria-selected="false"><span class="no">A-104</span>Employers &amp; boards</button>
+    <button role="tab" id="tab-adcheck" data-sheet="adcheck" aria-controls="sheet-adcheck" aria-selected="false"><span class="no">A-105</span>Ad check</button>
+  </nav>
+
+  <!-- ===================== A-101 SEARCH ===================== -->
+  <section class="sheet" id="sheet-search" role="tabpanel" aria-labelledby="tab-search">
+    <div class="search-grid">
+      <aside class="rail">
+        <div class="panel">
+          <div class="block-h"><h2>Roles</h2><button class="btn ghost small" id="rolesReset" type="button">Reset</button></div>
+          <div id="groups"></div>
+          <label class="f" for="custom">Your own keywords</label>
+          <input type="text" id="custom" placeholder="e.g. Chief Architect, townhouses" autocomplete="off">
+          <p class="hint">Separate with commas. Each becomes its own row in the search grid.</p>
+        </div>
+        <div class="panel">
+          <h2>Where</h2>
+          <div id="locs" class="seg wrap" style="margin-top:10px"></div>
+          <div class="row2">
+            <div>
+              <label class="f" for="radius">Radius</label>
+              <select id="radius">
+                <option value="10">10 km</option>
+                <option value="25">25 km</option>
+                <option value="50">50 km</option>
+                <option value="100">100 km</option>
+              </select>
+            </div>
+            <div>
+              <label class="f" for="worktype">Work type</label>
+              <select id="worktype">
+                <option value="any">Any</option>
+                <option value="ft">Full time</option>
+                <option value="pt">Part time</option>
+                <option value="contract">Contract / temp</option>
+                <option value="casual">Casual</option>
+              </select>
+            </div>
+          </div>
+          <p class="hint">Radius applies on Indeed, LinkedIn, Jora and Adzuna. SEEK searches its own region (All Brisbane covers Ipswich, Logan, Moreton Bay and Redlands).</p>
+        </div>
+        <div class="panel">
+          <h2>Posted</h2>
+          <div id="days" class="seg" style="margin-top:10px"></div>
+          <label class="f" for="exclude">Leave out ads mentioning</label>
+          <input type="text" id="exclude" autocomplete="off">
+          <p class="hint">Comma separated. Used on boards that support NOT / minus.</p>
+        </div>
+      </aside>
+
+      <div class="out">
+        <div class="summary" id="summary"></div>
+        <div class="panel query">
+          <div class="query-h"><h2>Boolean search string</h2><button class="btn small" id="copyQ" type="button">Copy</button></div>
+          <code id="qText"></code>
+          <p class="hint">Paste this into a SEEK, LinkedIn or Indeed saved search so new ads are emailed to you.</p>
+        </div>
+        <div class="matrix-wrap"><table class="matrix" id="matrix"></table></div>
+        <div>
+          <div class="block-h" style="margin-bottom:10px"><h2>Industry, government and niche boards</h2><a href="#directory" class="btn ghost small" data-goto="directory">All employers &amp; recruiters</a></div>
+          <div class="more" id="moreBoards"></div>
+        </div>
+        <details class="panel howto">
+          <summary>Get new ads emailed to you every morning (5 minutes)</summary>
+          <ol>
+            <li><b>SEEK:</b> open the SEEK link in the “All roles” row, sign in, then choose <i>Save search</i> and set alerts to daily.</li>
+            <li><b>LinkedIn:</b> open the LinkedIn link and switch on <i>Set alert</i> above the results. Also tick “Open to work” (recruiters only) in your profile.</li>
+            <li><b>Indeed:</b> open the Indeed link and accept the <i>Get new jobs for this search by email</i> prompt.</li>
+            <li><b>Builders:</b> many volume builders hire through their own careers pages and LinkedIn first. Follow the builders on the Employers sheet.</li>
+            <li><b>Recruiters:</b> send your CV and portfolio to two or three of the specialist recruiters on the Employers sheet. Many design-manager roles are filled before they are advertised.</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== A-102 LEADS ===================== -->
+  <section class="sheet" id="sheet-leads" role="tabpanel" aria-labelledby="tab-leads" hidden>
+    <div class="sheet-h">
+      <h2>Live leads</h2>
+      <p id="leadsMeta">Openings found across SEEK, Indeed, LinkedIn, Jora and builder careers pages.</p>
+    </div>
+    <div class="filters">
+      <div id="leadFam" class="seg wrap"></div>
+      <div id="leadRegion" class="seg wrap"></div>
+    </div>
+    <div class="leads" id="leadsList"></div>
+    <div class="empty" id="leadsEmpty" hidden></div>
+  </section>
+
+  <!-- ===================== A-103 TRACKER ===================== -->
+  <section class="sheet" id="sheet-tracker" role="tabpanel" aria-labelledby="tab-tracker" hidden>
+    <div class="sheet-h">
+      <h2>My applications</h2>
+      <span class="store-badge local" id="storeBadge">Saved in this browser</span>
+    </div>
+    <dl class="stats" id="stats"></dl>
+    <div style="margin-bottom:14px"><button class="btn primary" id="addToggle" type="button">Add a job</button></div>
+    <form class="panel jobform" id="jobForm" hidden novalidate>
+      <div class="block-h"><h2 id="formTitle">Add a job</h2></div>
+      <div class="form-grid">
+        <div class="span2"><label class="f" for="jTitle">Role *</label><input type="text" id="jTitle" required placeholder="Senior Draftsperson – Archicad"></div>
+        <div><label class="f" for="jCompany">Company</label><input type="text" id="jCompany" placeholder="Builder or recruiter"></div>
+        <div><label class="f" for="jArea">Area</label><input type="text" id="jArea" placeholder="Springwood"></div>
+        <div class="span2"><label class="f" for="jUrl">Ad link</label><input type="url" id="jUrl" placeholder="https://"></div>
+        <div><label class="f" for="jSalary">Salary</label><input type="text" id="jSalary" placeholder="$95k + super"></div>
+        <div><label class="f" for="jSource">Found on</label>
+          <select id="jSource">
+            <option>SEEK</option><option>LinkedIn</option><option>Indeed</option><option>Jora</option>
+            <option>Company site</option><option>Recruiter</option><option>Referral</option><option>Other</option>
+          </select></div>
+        <div><label class="f" for="jStage">Stage</label><select id="jStage"></select></div>
+        <div><label class="f" for="jApplied">Applied on</label><input type="date" id="jApplied"></div>
+        <div><label class="f" for="jFollow">Follow up on</label><input type="date" id="jFollow"></div>
+        <div><label class="f" for="jContact">Contact</label><input type="text" id="jContact" placeholder="Name, phone or email"></div>
+        <div class="full"><label class="f" for="jNotes">Notes</label><textarea id="jNotes" rows="3" placeholder="Portfolio pieces sent, interview prep, salary discussed…"></textarea></div>
+      </div>
+      <div class="form-acts">
+        <button class="btn primary" type="submit" id="jSave">Save job</button>
+        <button class="btn" type="button" id="jCancel">Cancel</button>
+        <span class="hint" id="formMsg" role="status"></span>
+      </div>
+    </form>
+    <div class="board" id="board"></div>
+  </section>
+
+  <!-- ===================== A-104 DIRECTORY ===================== -->
+  <section class="sheet" id="sheet-directory" role="tabpanel" aria-labelledby="tab-directory" hidden>
+    <div class="sheet-h">
+      <h2>Employers &amp; boards</h2>
+      <p>Who hires building designers, drafters and design managers in South East Queensland. Check careers pages directly: many builders post there before the job boards.</p>
+    </div>
+    <div class="dir-tools">
+      <input type="search" id="dirQ" placeholder="Search by name, suburb or type, e.g. “volume builder”" autocomplete="off">
+      <div id="dirCats" class="seg wrap"></div>
+    </div>
+    <div id="dirList"></div>
+  </section>
+
+  <!-- ===================== A-105 AD CHECK ===================== -->
+  <section class="sheet" id="sheet-adcheck" role="tabpanel" aria-labelledby="tab-adcheck" hidden>
+    <div class="sheet-h">
+      <h2>Ad check</h2>
+      <p>Paste a job ad to see which of its requirements you already cover, the gaps to address in your cover letter, and the keywords to repeat in your resume for screening software.</p>
+    </div>
+    <div class="ad-grid">
+      <div class="panel" style="padding:14px 16px 16px">
+        <div class="block-h"><label class="f" for="adText" style="margin-top:0">Job ad text</label><button class="btn ghost small" type="button" id="adClear">Clear</button></div>
+        <textarea id="adText" spellcheck="false"></textarea>
+        <p class="hint" id="adHint"></p>
+        <details style="margin-top:12px">
+          <summary style="cursor:pointer;font-weight:600">My skills <span class="hint" id="mySkillsCount"></span></summary>
+          <p class="hint">Tick what you can genuinely claim. The fit score compares these with the ad.</p>
+          <div id="mySkills" style="display:grid;gap:10px;margin-top:8px"></div>
+        </details>
+      </div>
+      <div style="display:grid;gap:16px;min-width:0">
+        <div class="panel fit" id="fit"></div>
+        <div class="panel ai" id="aiBox" hidden>
+          <h2>Tailor my application with Claude</h2>
+          <label class="f" for="aboutMe" style="margin-top:0">About me (kept in this browser)</label>
+          <textarea id="aboutMe" rows="4" placeholder="e.g. 8 years residential drafting for a volume builder, Archicad power user, ran a team of 4, BDAQ member…"></textarea>
+          <div class="form-acts" style="margin-top:4px">
+            <button class="btn primary" type="button" id="aiGo">Write resume bullets &amp; cover letter opener</button>
+            <button class="btn" type="button" id="aiStop" hidden>Stop</button>
+          </div>
+          <p class="hint" id="aiMsg">Uses your own Claude account. Nothing is sent until you press the button.</p>
+          <div class="ai-out" id="aiOut" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Search links open each site's own results. Nothing is scraped and no account is needed.</span>
+    <span id="footStore">Applications are private to you.</span>
+  </footer>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+/* =====================================================================
+   DATA
+   ===================================================================== */
+const GROUPS = [
+  { id: "design", name: "Building design", on: true,
+    terms: ["building designer", "residential building designer", "residential designer", "home designer", "architectural designer"],
+    off: [] },
+  { id: "drafting", name: "Drafting", on: true,
+    terms: ["draftsperson", "drafter", "draftsman", "architectural draftsperson", "residential draftsperson", "production draftsperson", "building drafter", "drafting"],
+    off: ["drafting"] },
+  { id: "bim", name: "Archicad & BIM", on: true,
+    terms: ["archicad", "revit", "BIM modeller", "BIM coordinator", "architectural technician", "documentation"],
+    off: ["documentation"] },
+  { id: "lead", name: "Drafting & design management", on: true,
+    terms: ["drafting manager", "drafting team leader", "design manager", "design coordinator", "design and documentation manager", "head of design", "studio manager", "BIM manager"],
+    off: [] },
+  { id: "product", name: "Product development", on: true,
+    terms: ["product development manager", "product design manager", "product development coordinator", "product manager", "design innovation manager"],
+    off: ["product manager"] },
+  { id: "adjacent", name: "Adjacent roles", on: false,
+    terms: ["estimator", "contracts administrator", "pre-construction coordinator", "pre-start consultant", "new home sales consultant", "energy assessor", "building certifier", "CAD manager"],
+    off: [] },
+];
+
+const LOCS = [
+  { id: "bne", name: "Brisbane", seek: "All Brisbane QLD", label: "Brisbane QLD", li: "Brisbane, Queensland, Australia", adz: "Brisbane", c1: "brisbane-qld" },
+  { id: "gc", name: "Gold Coast", seek: "All Gold Coast QLD", label: "Gold Coast QLD", li: "Gold Coast, Queensland, Australia", adz: "Gold Coast", c1: "gold-coast-qld" },
+  { id: "sc", name: "Sunshine Coast", seek: "Sunshine Coast QLD", label: "Sunshine Coast QLD", li: "Sunshine Coast, Queensland, Australia", adz: "Sunshine Coast", c1: "sunshine-coast-qld" },
+  { id: "ips", name: "Ipswich", seek: "Ipswich QLD", label: "Ipswich QLD", li: "Ipswich, Queensland, Australia", adz: "Ipswich", c1: "ipswich-qld" },
+  { id: "twb", name: "Toowoomba", seek: "Toowoomba & Darling Downs QLD", label: "Toowoomba QLD", li: "Toowoomba, Queensland, Australia", adz: "Toowoomba", c1: "toowoomba-qld" },
+  { id: "qld", name: "All Queensland", seek: "QLD", label: "Queensland", li: "Queensland, Australia", adz: "Queensland", c1: "queensland-qld" },
+];
+
+const DAYS = [
+  { v: 1, label: "24 h" }, { v: 3, label: "3 days" }, { v: 7, label: "7 days" },
+  { v: 14, label: "14 days" }, { v: 30, label: "30 days" }, { v: 0, label: "Any" },
+];
+
+/* Board URL formats checked October 2026. SEEK search now lives on au.seek.com.
+   style: "not" = AND/OR/NOT + quotes, "minus" = OR + quotes + -exclude, "each" = one title per link. */
+const SEEK_DAYS = { 1: 1, 3: 3, 7: 7, 14: 14, 30: 31, 0: "" };
+const SEEK_WT = { any: "", ft: 242, pt: 243, contract: 244, casual: 245 };
+const INDEED_WT = { any: "", ft: "fulltime", pt: "parttime", contract: "contract", casual: "casual" };
+const LI_DAYS = { 1: "r86400", 3: "r259200", 7: "r604800", 14: "r1209600", 30: "r2592000", 0: "" };
+const LI_WT = { any: "", ft: "F", pt: "P", contract: "C", casual: "P,T" };
+const LI_MILES = { 10: 5, 25: 10, 50: 25, 100: 50 };
+const GOOGLE_DAYS = { 1: " since yesterday", 3: " in the last 3 days", 7: " in the last week", 14: " in the last 2 weeks", 30: " in the last month", 0: "" };
+const JORA_DAYS = { 1: "24h", 3: "3d", 7: "7d", 14: "14d", 30: "30d", 0: "" };
+const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const seekPlace = (where) => encodeURI(where.replace(/\s+/g, "-"));
+const wide = (o) => o.loc.id === "qld";
+
+const BOARDS = [
+  { id: "seek", name: "SEEK", tag: "AND · OR · NOT", main: true, style: "not",
+    url: (q, o) => "https://au.seek.com/jobs?" + qs({ keywords: q, where: o.loc.seek, daterange: SEEK_DAYS[o.days], worktype: SEEK_WT[o.wt], sortmode: "ListedDate" }) },
+  { id: "indeed", name: "Indeed", tag: "OR · minus", main: true, style: "minus",
+    url: (q, o) => "https://au.indeed.com/jobs?" + qs({ q, l: o.loc.label, radius: wide(o) ? "" : o.radius, fromage: o.days || "", jt: INDEED_WT[o.wt], sort: "date" }) },
+  { id: "linkedin", name: "LinkedIn", tag: "AND · OR · NOT", main: true, style: "not",
+    url: (q, o) => "https://www.linkedin.com/jobs/search/?" + qs({ keywords: q, location: o.loc.li, distance: wide(o) ? "" : LI_MILES[o.radius], f_TPR: LI_DAYS[o.days], f_JT: LI_WT[o.wt], sortBy: "DD" }) },
+  { id: "google", name: "Google Jobs", tag: "every site", main: true, style: "minus", maxWords: 32,
+    url: (q, o) => "https://www.google.com/search?" + qs({ q: q + " jobs in " + o.loc.label + GOOGLE_DAYS[o.days], udm: "8" }) },
+  { id: "jora", name: "Jora", tag: "1 title per link", main: true, style: "each",
+    url: (q, o) => "https://au.jora.com/j?" + qs({ q, l: o.loc.label, a: JORA_DAYS[o.days], r: wide(o) ? "" : o.radius }) },
+  { id: "adzuna", name: "Adzuna", tag: "1 title per link", main: true, style: "each",
+    url: (q, o) => "https://www.adzuna.com.au/search?" + qs({ q, w: o.loc.adz, f: [1, 3, 7].includes(o.days) ? o.days : "", sb: "date", sd: "down" }) },
+  { id: "careerone", name: "CareerOne", tag: "1 title per link", main: true, style: "each",
+    url: (q, o) => "https://www.careerone.com.au/" + slug(q) + "-jobs/in-" + o.loc.c1 },
+];
+
+/* Fixed searches and niche boards shown under the grid. url(o, firstTerm) or a plain string. */
+const MORE = [
+  { name: "SEEK · Architectural Drafting", tag: "Browse a whole category", note: "Every architectural drafting ad in your area, whatever the job title says.",
+    url: (o) => "https://au.seek.com/jobs-in-design-architecture/architectural-drafting/in-" + seekPlace(o.loc.seek) + "?" + qs({ daterange: SEEK_DAYS[o.days], sortmode: "ListedDate" }) },
+  { name: "SEEK · Design & Architecture", tag: "Browse a whole category", note: "The full category, including design management and interior roles.",
+    url: (o) => "https://au.seek.com/jobs-in-design-architecture/in-" + seekPlace(o.loc.seek) + "?" + qs({ daterange: SEEK_DAYS[o.days], sortmode: "ListedDate" }) },
+  { name: "HIA Jobs", tag: "Housing industry board", note: "Housing Industry Association board. Metricon and Sekisui House advertise here.", url: "https://jobs.hia.com.au/jobs/in-australia" },
+  { name: "BDAA Jobs", tag: "Building design board", note: "Building Designers Association of Australia jobs board. Filter by Queensland.", url: "https://bdaa.com.au/jobs" },
+  { name: "SmartJobs · drafting", tag: "Queensland Government", note: "State roles, including QBuild and Housing and Public Works.", url: "https://smartjobs.qld.gov.au/jobtools/jncustomsearch.searchResults?in_organid=14904&in_skills=drafting&in_jobDate=All" },
+  { name: "SmartJobs · architectural", tag: "Queensland Government", note: "Architectural officer, design and building roles across departments.", url: "https://smartjobs.qld.gov.au/jobtools/jncustomsearch.searchResults?in_organid=14904&in_skills=architectural&in_jobDate=All" },
+  { name: "Hatch · design jobs Brisbane", tag: "Builder roles", note: "Metricon, Plantation Homes and Burbank have advertised drafting roles here.", url: "https://hatch.team/jobs/design/brisbane" },
+  { name: "Employment Hero Jobs", tag: "Smaller builders", note: "Smaller builders and modular firms (Saltair, Mettle) post here.", url: "https://employmenthero.com/jobs/brisbane-qld/" },
+  { name: "Workforce Australia", tag: "Australian Government", note: "The government job board. Searches your first selected title.",
+    url: (o, t) => "https://www.workforceaustralia.gov.au/individuals/jobs/search?" + qs({ searchText: t, jobAge: o.days || "" }) },
+  { name: "Talent.com", tag: "Aggregator", note: "Collects ads from smaller sites. Searches your first selected title.",
+    url: (o, t) => "https://au.talent.com/jobs?" + qs({ k: t, l: o.loc.label, date: [1, 3, 7].includes(o.days) ? o.days : "" }) },
+  { name: "Jooble", tag: "Aggregator", note: "Another aggregator with different coverage. Searches your first selected title.",
+    url: (o, t) => "https://au.jooble.org/SearchResult?" + qs({ ukw: t, rgns: o.loc.label }) },
+  { name: "GradConnection", tag: "Graduate & junior", note: "Entry-level construction and design roles in Brisbane.", url: "https://au.gradconnection.com/entry-level-jobs/construction/brisbane/" },
+];
+
+/* Employers, boards and recruiters. u = careers/jobs page (null when no official page could be
+   confirmed: the card then offers SEEK, LinkedIn and a careers-page search instead). */
+const DIR_CATS = [
+  { id: "builders", name: "Home builders", blurb: "drafting, design studio and product teams" },
+  { id: "developers", name: "Developers", blurb: "design and product management" },
+  { id: "commercial", name: "Commercial & multi-res builders", blurb: "design managers, coordinators and BIM" },
+  { id: "prefab", name: "Modular & prefab", blurb: "design and drafting" },
+  { id: "products", name: "Building product makers", blurb: "product development and drafting" },
+  { id: "practices", name: "Design practices", blurb: "seen hiring Archicad drafters recently" },
+  { id: "recruiters", name: "Recruiters", blurb: "seen placing these roles in Brisbane" },
+  { id: "industry", name: "Industry boards & associations" },
+  { id: "gov", name: "Government & councils" },
+];
+const DIRECTORY = [
+  // Home builders
+  { c: "builders", n: "Metricon Homes", u: "https://metricon.com.au/careers", note: "Australia's largest home builder, with a Queensland division. Has a talent pool you can join." },
+  { c: "builders", n: "Plantation Homes", u: "https://www.plantationhomes.com.au/careers", note: "Queensland brand of Henley Properties Group. Springwood office with a production drafting team and design studio." },
+  { c: "builders", n: "Coral Homes", u: "https://coralhomes.com.au/careers-with-coral/", note: "Queensland-founded volume builder. Lists design and drafting as a career stream." },
+  { c: "builders", n: "NEX Building Group (Brighton Homes)", sn: "Brighton Homes", u: "https://www.mcdonaldjoneshomes.com.au/careers/current-job-opportunities", lt: "Group job board", note: "Owns Brighton Homes (Loganholme HQ), McDonald Jones and others. Vacancies for every brand, drafting included, are listed here." },
+  { c: "builders", n: "G.J. Gardner Homes", u: "https://careers.gjgardner.com.au/jobs", note: "National head office at Birtinya on the Sunshine Coast. A good target for head-office design and product roles." },
+  { c: "builders", n: "Ausbuild", u: "https://www.ausbuild.com.au/about/working-at-ausbuild", note: "South East Queensland builder-developer. Hires housing designers and interior designers." },
+  { c: "builders", n: "Burbank", u: "https://www.burbank.com.au/careers", note: "Queensland offices at Eight Mile Plains and Underwood. Has advertised Archicad production drafting roles." },
+  { c: "builders", n: "Simonds Homes", u: "https://careers.simonds.com.au", note: "Queensland office at Loganholme." },
+  { c: "builders", n: "Stroud Homes", u: "https://careers.stroudhomes.com.au/", note: "Franchise builder with Queensland franchisees." },
+  { c: "builders", n: "Orbit Homes", u: "https://orbithomes.com.au/about-us/careers", note: "Builds in Victoria and Queensland. Has advertised a senior Revit draftsperson." },
+  { c: "builders", n: "Stylemaster Homes", u: "https://www.stylemasterhomes.com.au/careers", note: "Brisbane head office in Fortitude Valley." },
+  { c: "builders", n: "Bold Living", u: "https://boldliving.com.au/jobs/", note: "Project builder based at North Lakes." },
+  { c: "builders", n: "Sekisui House Australia", u: "https://www.sekisuihouse.com.au/about-sekisui-house/careers/jobs/", note: "Builder and developer with South East Queensland communities. Has advertised design and visualisation roles." },
+  { c: "builders", n: "Hallmark Homes", u: null, note: "Family-owned project builder based at Southport, building across South East Queensland." },
+  { c: "builders", n: "Ownit Homes", u: null, note: "Custom and project builder at Upper Mount Gravatt since 1972." },
+  { c: "builders", n: "Integrity New Homes", u: null, note: "Franchise builder with a Queensland branch at Stapylton." },
+  { c: "builders", n: "Hotondo Homes", u: null, note: "Franchise builder. Queensland roles are with local franchisees." },
+  { c: "builders", n: "Dixon Homes", u: null, note: "Rocklea. Recently advertised a graduate Archicad residential drafter." },
+  { c: "builders", n: "Creation Homes", u: null, note: "Milton. Recently advertised an Archicad production draftsperson ($90k–$110k)." },
+  { c: "builders", n: "Pilgrim Homes", u: null, note: "Custom and project homes and townhouses. Recently advertised a building designer role with a path to design manager." },
+  { c: "builders", n: "Wright Choice Homes", u: null, note: "Caboolture modular and transportable homes. Recently advertised a draftsperson." },
+  { c: "builders", n: "Tiger Living", u: null, note: "Stafford. Recently advertised an architectural draftsperson for residential and development work." },
+  // Developers
+  { c: "developers", n: "Stockland", u: "https://www.stockland.com.au/careers/job-opportunities", note: "Masterplanned communities across South East Queensland." },
+  { c: "developers", n: "Mirvac", u: "https://www.mirvac.com/careers/our-culture", note: "Has a design management stream." },
+  { c: "developers", n: "Mirvac Design", u: "https://design.mirvac.com/careers", note: "Mirvac's in-house architecture and design practice." },
+  { c: "developers", n: "Peet", u: "https://www.peet.com.au/careers/", note: "Land and community developer." },
+  { c: "developers", n: "Lendlease", u: "https://www.lendlease.com/careers/careers-faqs/", lt: "Careers info", note: "All vacancies are on Lendlease's Workday portal, linked from this page." },
+  { c: "developers", n: "Frasers Property Australia", u: "https://careers.frasersproperty.com.au/jobs/search", note: "Has advertised Queensland roles." },
+  { c: "developers", n: "AVJennings", u: "https://www.avjennings.com.au/about-us/people-and-careers", note: "Developer and builder with Queensland operations. Takes apprentice draftspersons." },
+  { c: "developers", n: "Consolidated Properties Group", u: null, note: "Brisbane-based developer (Eagle Street)." },
+  { c: "developers", n: "Aria Property Group", u: null, note: "South Brisbane apartment developer." },
+  // Commercial & multi-res
+  { c: "commercial", n: "Hutchinson Builders", u: "https://www.hutchinsonbuilders.com.au/careers/opportunities", note: "Brisbane head office. Australia's largest private builder." },
+  { c: "commercial", n: "BESIX Watpac", u: "https://careers.smartrecruiters.com/BESIX/watpac", note: "Brisbane. Has advertised design manager, draftsperson and BIM coordinator roles." },
+  { c: "commercial", n: "Hansen Yuncken", u: "https://www.hansenyuncken.com.au/careers/positions-vacant", note: "Hires VDC and BIM roles, including in Queensland." },
+  { c: "commercial", n: "Multiplex", u: "https://www.multiplex.global/careers/", note: "Has a design career stream." },
+  { c: "commercial", n: "Built", u: "https://careers.built.com.au/", note: "Brisbane office. Recruits design managers and design coordinators." },
+  { c: "commercial", n: "Kane Constructions", u: "https://www.kane.com.au/whoweare/careers-at-kane", note: "Brisbane office since 2006." },
+  { c: "commercial", n: "ADCO Constructions", u: "https://www.adcoconstruct.com.au/careers/", note: "Brisbane and Gold Coast offices. Runs design management cadetships." },
+  { c: "commercial", n: "FKG Group", u: "https://www.fkg.com.au/careers", note: "Toowoomba head office with a Brisbane office." },
+  { c: "commercial", n: "Paynters", u: "https://paynters.com.au/careers/", note: "Queensland commercial builder." },
+  { c: "commercial", n: "Tomkins", u: "https://www.tomkinscommercial.com.au/careers/", note: "Commercial and industrial builder based at Banyo." },
+  { c: "commercial", n: "SHAPE Australia", u: "https://shape.com.au/careers/", note: "Fitout and construction. Brisbane and Gold Coast offices." },
+  { c: "commercial", n: "McNab", u: null, note: "Toowoomba and Brisbane. Has advertised a facade design manager." },
+  { c: "commercial", n: "Woollam Constructions", u: null, note: "Brisbane-based commercial builder." },
+  { c: "commercial", n: "Roberts Co", u: null, note: "Brisbane office on Queen Street, expanding in South East Queensland." },
+  { c: "commercial", n: "Gardner Vaughan Group", u: null, note: "Nundah builder-developer. Recently advertised a multi-residential design manager." },
+  { c: "commercial", n: "The Lorian Group", u: null, note: "Recently advertised a builder-side design manager ($150k–$160k)." },
+  { c: "commercial", n: "Nileport Projects", u: null, note: "Recently advertised a multi-residential design manager." },
+  // Modular & prefab
+  { c: "prefab", n: "Hutchies Modular", u: "https://modular.hutchies.com.au/about", lt: "About", note: "Factories at Toowoomba and Yatala." },
+  { c: "prefab", n: "Fleetwood Australia", u: "https://www.fleetwood.com.au/careers/", note: "Modular builder with a Queensland factory." },
+  { c: "prefab", n: "Ausco Modular", u: "http://www.ausco.com.au/careers", note: "Head office at Redbank. Hires in design and engineering." },
+  { c: "prefab", n: "Saltair Modular", u: null, note: "Coolum Beach and Crestmead modular homes. Recently advertised a designer/draftsperson." },
+  { c: "prefab", n: "ModnPods", u: "https://modnpods.com.au/", lt: "Website", note: "Arundel, Gold Coast. Growing headcount." },
+  { c: "prefab", n: "Volo Modular", u: null, note: "Yatala. Builds Queensland social housing." },
+  { c: "prefab", n: "Hoek Modular Homes", u: null, note: "Lawnton." },
+  { c: "prefab", n: "QBuild modern methods of construction", u: "https://chde.qld.gov.au/about/department/business-areas/public-works/qbuild/modern-methods-construction-program", lt: "Supplier list", noSearch: true, note: "The state's list of Queensland modular suppliers, a ready-made target list." },
+  // Building product makers
+  { c: "products", n: "BlueScope (Lysaght, Fielders, Colorbond)", sn: "BlueScope", u: "https://www.bluescope.com/careers/join-our-team/careers-in-australia", note: "Product development and research roles." },
+  { c: "products", n: "James Hardie", u: "https://careers.jameshardie.com/go/View-All-Jobs/8988500/", note: "Cladding and facade products. Has an R&D jobs category." },
+  { c: "products", n: "CSR (Saint-Gobain)", sn: "CSR", u: "https://careers.csr.com.au/en/listing/", note: "Gyprock, Hebel, Bradford. Building-products and product development roles." },
+  { c: "products", n: "Boral", u: "https://careers.boral.com.au/jobs/search", note: "Brisbane roles listed." },
+  { c: "products", n: "Stratco", u: "https://www.stratco.com.au/about/careers/", note: "Outdoor and roofing products. Has drafting, estimating and design roles. Brisbane design centre." },
+  { c: "products", n: "Bradnam's Windows & Doors", sn: "Bradnam's", u: "https://www.bradnams.com.au/more/careers/", note: "Boondall, Brisbane. Has a product design and engineering team." },
+  { c: "products", n: "Stramit", u: "https://www.stramit.com.au/about-stramit/people-and-careers/", note: "Steel building products." },
+  { c: "products", n: "Hyne Timber", u: null, note: "Timber products. Narangba site." },
+  { c: "products", n: "Metroll", u: null, note: "Steel roofing and framing. Richlands, Brisbane." },
+  { c: "products", n: "DuluxGroup", u: null, note: "Paints and coatings. Rocklea plant." },
+  // Design practices
+  { c: "practices", n: "Towill Design Group", u: null, note: "Fortitude Valley. Recently advertised an Archicad architectural draftsperson." },
+  { c: "practices", n: "Arei Designs", u: null, note: "Brisbane, remote-friendly. Recently advertised an Archicad draftsperson/building designer." },
+  { c: "practices", n: "Besa Design and Construction", u: null, note: "Eight Mile Plains. Recently advertised a building designer/draftsperson." },
+  { c: "practices", n: "Spatial Method", u: null, note: "Remote residential drafting studio." },
+  // Recruiters
+  { c: "recruiters", n: "Deacon Recruitment", u: null, note: "Recently placing Archicad residential draftspersons in south Brisbane." },
+  { c: "recruiters", n: "Define Talent", u: null, note: "Placed a senior/lead draftsperson with a family-owned builder." },
+  { c: "recruiters", n: "Gough Recruitment", u: null, note: "Recently recruiting an Archicad draftsperson for architecture and interiors." },
+  { c: "recruiters", n: "Marble Recruitment", u: null, note: "Has recruited Archicad draftspersons for Queensland home builders." },
+  { c: "recruiters", n: "CGC Recruitment", u: null, note: "Commercial design manager roles (tier 2: health and education)." },
+  { c: "recruiters", n: "Hays Architecture", sn: "Hays architecture", u: null, note: "Advertises Queensland architecture and design roles." },
+  { c: "recruiters", n: "Appoint Consulting", u: null, note: "Advertises Queensland architecture roles." },
+  // Industry boards & associations
+  { c: "industry", n: "BDAA Jobs Board", u: "https://bdaa.com.au/jobs", lt: "Jobs", note: "Building Designers Association of Australia. Filter by location and expertise." },
+  { c: "industry", n: "HIA Jobs", u: "https://jobs.hia.com.au/jobs/in-australia", lt: "Jobs", note: "Housing Industry Association board, with employer pages for builders such as Metricon." },
+  { c: "industry", n: "Building Design Queensland (formerly BDAQ)", u: null, note: "The Queensland peak body for building designers. Its events and CPD are a good way to meet hiring managers." },
+  { c: "industry", n: "Australian Institute of Architects – QLD", u: "https://www.architecture.com.au/qld-chapter", lt: "QLD chapter", note: "No Queensland job board, but chapter events are useful for networking." },
+  { c: "industry", n: "Master Builders Queensland", u: "https://www.mbqld.com.au/membership/why-join", lt: "Website", note: "No public job board. Members are the builders on this page." },
+  // Government & councils
+  { c: "gov", n: "SmartJobs (Queensland Government)", u: "https://smartjobs.qld.gov.au/jobtools/jncustomsearch.searchResults?in_organid=14904&in_skills=drafting&in_jobDate=All", lt: "Drafting jobs", note: "Every state government job. Also try “architectural” and “QBuild”." },
+  { c: "gov", n: "QBuild (Housing and Public Works)", u: "https://www.hpw.qld.gov.au/about/work/working-for-qbuild", note: "The state's building agency. Hires architects, drafters and design staff." },
+  { c: "gov", n: "Housing and Public Works graduate program", u: "https://www.housing.qld.gov.au/about/work/build-your-career/graduate-program", note: "For graduates moving into government design work." },
+  { c: "gov", n: "Brisbane City Council", u: "https://www.brisbane.qld.gov.au/about-council/careers-at-council", note: "Architecture is one of its professional streams." },
+  { c: "gov", n: "Logan City Council", u: "https://careers.logan.qld.gov.au/job/job_search_result.cfm", lt: "Job search", note: "" },
+  { c: "gov", n: "Councils on the Gold Coast", u: "https://careersatcouncil.com.au/queensland/gold-coast", lt: "Jobs", note: "Independent board that collects Gold Coast council jobs." },
+  { c: "gov", n: "Ipswich City Council", u: null, note: "" },
+  { c: "gov", n: "Moreton Bay Regional Council", u: null, note: "" },
+  { c: "gov", n: "Sunshine Coast Council", u: null, note: "" },
+  { c: "gov", n: "Redland City Council", u: null, note: "" },
+];
+
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k === "text") el.textContent = v;
+    else if (k.startsWith("on") && typeof v === "function") el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? "" : String(v));
+  }
+  for (const kid of kids.flat(Infinity)) {
+    if (kid == null || kid === false) continue;
+    el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+  }
+  return el;
+}
+const local = {
+  get(k, d) { try { const v = localStorage.getItem("bdj:" + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem("bdj:" + k, JSON.stringify(v)); } catch { /* storage unavailable */ } },
+};
+function safeUrl(u) {
+  if (!u || typeof u !== "string") return null;
+  try { const x = new URL(u.trim()); return (x.protocol === "https:" || x.protocol === "http:") ? x.href : null; } catch { return null; }
+}
+const enc = encodeURIComponent;
+const qs = (o) => Object.entries(o).filter(([, v]) => v !== "" && v != null).map(([k, v]) => enc(k) + "=" + enc(v)).join("&");
+const pad = (n) => String(n).padStart(2, "0");
+const isoDate = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const todayISO = () => isoDate(new Date());
+const addDays = (iso, n) => { const d = new Date(iso + "T00:00:00"); d.setDate(d.getDate() + n); return isoDate(d); };
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function fmtDate(iso) {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return iso || "";
+  const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
+  const now = new Date();
+  return d + " " + MONTHS[m - 1] + (y !== now.getFullYear() ? " " + y : "");
+}
+function daysAgo(iso) {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return null;
+  const a = new Date(iso.slice(0, 10) + "T00:00:00"), b = new Date(todayISO() + "T00:00:00");
+  return Math.round((b - a) / 86400000);
+}
+let toastTimer;
+function toast(msg) {
+  let t = $(".toast");
+  if (!t) { t = h("div", { class: "toast", role: "status" }); document.body.append(t); }
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2600);
+}
+async function copyText(text, btn) {
+  try { await navigator.clipboard.writeText(text); toast("Copied"); }
+  catch {
+    const code = $("#qText"); const r = document.createRange(); r.selectNodeContents(code);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    toast("Selected. Press Ctrl+C (or ⌘C) to copy");
+  }
+  if (btn) btn.blur();
+}
+const quoteTerm = (t) => (/[\s\-&\/]/.test(t) ? '"' + t + '"' : t);
+function boolQuery(terms, excl, style) {
+  const parts = terms.map(quoteTerm);
+  let q = parts.length > 1 ? "(" + parts.join(" OR ") + ")" : (parts[0] || "");
+  if (excl.length && style === "minus") q += " " + excl.map((x) => "-" + quoteTerm(x)).join(" ");
+  // "NOT a NOT b" rather than "NOT (a OR b)": it reads the same whether or not a board honours brackets
+  if (excl.length && style === "not") q += " " + excl.map((x) => "NOT " + quoteTerm(x)).join(" ");
+  return q;
+}
+
+/* =====================================================================
+   SEARCH SHEET
+   ===================================================================== */
+const DEFAULTS = { groupsOn: {}, termOff: {}, custom: "", exclude: "civil, mechanical, electrical, structural steel", loc: "bne", radius: 50, days: 7, wt: "any" };
+let S = Object.assign({}, DEFAULTS, local.get("search", {}));
+if (!LOCS.some((l) => l.id === S.loc)) S.loc = "bne";
+function saveS() { local.set("search", S); }
+
+const groupOn = (g) => (S.groupsOn[g.id] ?? g.on);
+const termOn = (g, t) => (S.termOff[g.id + "|" + t] ?? g.off.includes(t)) === false;
+const activeTerms = (g) => g.terms.filter((t) => termOn(g, t));
+const customTerms = () => S.custom.split(/[,;\n]+/).map((x) => x.trim()).filter(Boolean);
+const excludes = () => S.exclude.split(/[,;\n]+/).map((x) => x.trim()).filter(Boolean);
+const curLoc = () => LOCS.find((l) => l.id === S.loc) || LOCS[0];
+
+function searchRows() {
+  const rows = [];
+  for (const g of GROUPS) {
+    if (!groupOn(g)) continue;
+    const t = activeTerms(g);
+    if (t.length) rows.push({ id: g.id, name: g.name, terms: t });
+  }
+  const c = customTerms();
+  if (c.length) rows.push({ id: "custom", name: "Your keywords", terms: c });
+  const all = [...new Set(rows.flatMap((r) => r.terms).map((t) => t.toLowerCase()))];
+  const allTerms = all.map((lc) => rows.flatMap((r) => r.terms).find((t) => t.toLowerCase() === lc));
+  return { rows, allTerms };
+}
+
+function renderGroups() {
+  const box = $("#groups");
+  box.replaceChildren();
+  for (const g of GROUPS) {
+    const on = groupOn(g);
+    const cb = h("input", { type: "checkbox", id: "g-" + g.id });
+    cb.checked = on;
+    cb.addEventListener("change", () => { S.groupsOn[g.id] = cb.checked; saveS(); renderGroups(); renderSearch(); });
+    const chips = h("div", { class: "chips" }, g.terms.map((t) => {
+      const b = h("button", { type: "button", class: "chip", "aria-pressed": String(termOn(g, t)), text: t });
+      b.addEventListener("click", () => {
+        S.termOff[g.id + "|" + t] = termOn(g, t);
+        if (!groupOn(g)) S.groupsOn[g.id] = true;
+        saveS(); renderGroups(); renderSearch();
+      });
+      return b;
+    }));
+    box.append(h("div", { class: "grp" + (on ? "" : " off") },
+      h("label", { class: "grp-h", for: "g-" + g.id }, cb, g.name, h("span", { class: "count", text: activeTerms(g).length + "/" + g.terms.length })),
+      chips));
+  }
+}
+
+function renderControls() {
+  const locs = $("#locs");
+  locs.replaceChildren(...LOCS.map((l) => {
+    const b = h("button", { type: "button", "aria-pressed": String(S.loc === l.id), text: l.name });
+    b.addEventListener("click", () => { S.loc = l.id; saveS(); renderControls(); renderSearch(); });
+    return b;
+  }));
+  const days = $("#days");
+  days.replaceChildren(...DAYS.map((d) => {
+    const b = h("button", { type: "button", "aria-pressed": String(S.days === d.v), text: d.label });
+    b.addEventListener("click", () => { S.days = d.v; saveS(); renderControls(); renderSearch(); });
+    return b;
+  }));
+  $("#radius").value = String(S.radius);
+  $("#worktype").value = S.wt;
+  if (document.activeElement !== $("#custom")) $("#custom").value = S.custom;
+  if (document.activeElement !== $("#exclude")) $("#exclude").value = S.exclude;
+}
+
+const linkOpts = () => ({ loc: curLoc(), radius: Number(S.radius), days: Number(S.days), wt: S.wt, excl: excludes() });
+// Returns a list of {label, url}: one combined search, or one per title for boards without OR.
+function linksFor(board, terms) {
+  const o = linkOpts();
+  if (board.style === "each") return terms.map((t) => ({ label: t, url: board.url(t, o) }));
+  const q = boolQuery(terms, o.excl, board.style);
+  if (board.maxWords) {
+    const full = board.url(q, o);
+    const words = (new URL(full).searchParams.get("q") || "").split(/\s+/).filter(Boolean).length;
+    if (words > board.maxWords) return null;
+    return [{ label: q, url: full }];
+  }
+  return [{ label: q, url: board.url(q, o) }];
+}
+
+function renderSearch() {
+  const { rows, allTerms } = searchRows();
+  const loc = curLoc();
+  const main = BOARDS.filter((b) => b.main);
+  const dayTxt = S.days ? "posted in the last " + (S.days === 1 ? "24 hours" : S.days + " days") : "any date";
+  const sum = $("#summary");
+  sum.replaceChildren();
+  if (!allTerms.length) {
+    sum.append("Pick at least one role or add your own keywords to build searches.");
+  } else {
+    sum.append(h("b", { text: allTerms.length + " job titles" }), " across ", h("b", { text: main.length + " boards" }),
+      " in ", h("b", { text: loc.label + (loc.id === "qld" ? "" : " (+" + S.radius + " km)") }), ", " + dayTxt + ". ",
+      "Open one cell at a time, or use the top row to run everything at once.");
+  }
+  sum.append(h("a", { class: "jump", href: "#groups", text: "Change roles and filters ↓",
+    onclick: (e) => { e.preventDefault(); $(".rail").scrollIntoView({ behavior: "smooth", block: "start" }); } }));
+  const q = boolQuery(allTerms, excludes(), "not");
+  $("#qText").textContent = q || "—";
+
+  const table = $("#matrix");
+  table.replaceChildren();
+  const thead = h("thead", null, h("tr", null, h("th", { scope: "col", text: "Search" }),
+    main.map((b) => h("th", { scope: "col" }, b.name, h("small", { text: b.tag })))));
+  const tbody = h("tbody");
+  const allRow = rows.length > 1 ? [{ id: "all", name: "All roles", terms: allTerms }] : [];
+  for (const r of [...allRow, ...rows]) {
+    const tr = h("tr", { class: r.id === "all" ? "all" : null },
+      h("th", { scope: "row" }, r.name, h("small", { text: r.terms.length + (r.terms.length === 1 ? " title" : " titles") })));
+    for (const b of main) {
+      const L = linksFor(b, r.terms);
+      let cell;
+      if (!L) cell = h("span", { class: "na", title: "Google reads only the first 32 words. Use the role rows below.", text: "Too long · use rows" });
+      else if (L.length === 1) cell = h("a", { class: "go", href: L[0].url, target: "_blank", rel: "noopener", title: L[0].label, text: "Open" });
+      else if (r.id === "all") cell = h("span", { class: "na", text: "Use role rows" });
+      else cell = h("details", { class: "each" },
+        h("summary", { text: L.length + " links" }),
+        h("div", { class: "each-list" }, L.map((x) => h("a", { href: x.url, target: "_blank", rel: "noopener", text: x.label + " ↗" }))));
+      tr.append(h("td", null, cell));
+    }
+    tbody.append(tr);
+  }
+  if (!rows.length) tbody.append(h("tr", null, h("td", { colspan: String(main.length + 1), class: "na", text: "No roles selected." })));
+  table.append(thead, tbody);
+
+  const more = $("#moreBoards");
+  const o = linkOpts(), first = allTerms[0] || "draftsperson";
+  more.replaceChildren(...MORE.map((b) => {
+    const href = typeof b.url === "function" ? b.url(o, first) : b.url;
+    return h("a", { class: "card", href, target: "_blank", rel: "noopener" },
+      h("em", { text: b.tag }), h("b", { text: b.name + " ↗" }), h("span", { text: b.note }));
+  }));
+}
+
+function bindSearch() {
+  $("#radius").addEventListener("change", (e) => { S.radius = Number(e.target.value); saveS(); renderSearch(); });
+  $("#worktype").addEventListener("change", (e) => { S.wt = e.target.value; saveS(); renderSearch(); });
+  let t1, t2;
+  $("#custom").addEventListener("input", (e) => { clearTimeout(t1); t1 = setTimeout(() => { S.custom = e.target.value; saveS(); renderSearch(); }, 250); });
+  $("#exclude").addEventListener("input", (e) => { clearTimeout(t2); t2 = setTimeout(() => { S.exclude = e.target.value; saveS(); renderSearch(); }, 250); });
+  $("#copyQ").addEventListener("click", (e) => copyText($("#qText").textContent, e.currentTarget));
+  $("#rolesReset").addEventListener("click", () => { S.groupsOn = {}; S.termOff = {}; saveS(); renderGroups(); renderSearch(); toast("Roles reset"); });
+}
+
+/* =====================================================================
+   SHEETS (tabs)
+   ===================================================================== */
+const SHEETS = ["search", "leads", "tracker", "directory", "adcheck"];
+function showSheet(id, focus) {
+  if (!SHEETS.includes(id)) id = "search";
+  for (const s of SHEETS) {
+    $("#sheet-" + s).hidden = s !== id;
+    $("#tab-" + s).setAttribute("aria-selected", String(s === id));
+    $("#tab-" + s).tabIndex = s === id ? 0 : -1;
+  }
+  local.set("sheet", id);
+  if (focus) $("#tab-" + id).focus();
+  try { if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id); } catch { /* sandboxed */ }
+}
+function bindSheets() {
+  $$(".sheets button").forEach((b) => b.addEventListener("click", () => showSheet(b.dataset.sheet)));
+  $(".sheets").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const cur = SHEETS.indexOf(local.get("sheet", "search"));
+    const next = SHEETS[(cur + (e.key === "ArrowRight" ? 1 : SHEETS.length - 1)) % SHEETS.length];
+    showSheet(next, true); e.preventDefault();
+  });
+  $$("[data-goto]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); showSheet(a.dataset.goto); window.scrollTo(0, 0); }));
+  const fromHash = (location.hash || "").replace("#", "");
+  showSheet(SHEETS.includes(fromHash) ? fromHash : local.get("sheet", "search"));
+}
+
+/* =====================================================================
+   PLATFORM (db / user / sample) — all optional
+   ===================================================================== */
+const platform = (name) => {
+  try { return (window.claude && typeof window.claude.use === "function") ? window.claude.use(name).catch(() => null) : Promise.resolve(null); }
+  catch { return Promise.resolve(null); }
+};
+
+/* =====================================================================
+   TRACKER
+   ===================================================================== */
+const STAGES = [
+  { id: "saved", name: "Saved" }, { id: "applied", name: "Applied" }, { id: "interview", name: "Interview" },
+  { id: "offer", name: "Offer" }, { id: "closed", name: "Closed" },
+];
+const Tracker = {
+  mode: "local", col: null, jobs: [], editing: null, confirmDel: null,
+  loadLocal() { this.jobs = local.get("jobs", []); },
+  saveLocal() { local.set("jobs", this.jobs); },
+  async connect() {
+    const [db, user] = await Promise.all([platform("db"), platform("user")]);
+    if (!db || !user) return;
+    let uid = null;
+    try { uid = await user.id(); } catch { uid = null; }
+    if (!uid) return;
+    try { this.col = db.doc("data/users/" + uid + "/tracker").collection("jobs"); } catch { return; }
+    this.mode = "db";
+    this.col.onSnapshot((snap) => {
+      this.jobs = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id }));
+      renderTracker(); renderLeads();
+    }, () => { this.mode = "local"; this.col = null; this.loadLocal(); renderTracker(); toast("Couldn't reach your saved applications. Using this browser for now."); });
+    renderTracker();
+  },
+  newId() { return "j" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); },
+  async add(job) {
+    const id = this.newId();
+    const doc = Object.assign({ created: new Date().toISOString() }, job, { updated: new Date().toISOString() });
+    if (this.mode === "db") {
+      try { await this.col.doc(id).set(doc); return true; } catch (e) { return this.fail(e); }
+    }
+    this.jobs.push(Object.assign({ id }, doc)); this.saveLocal(); renderTracker(); renderLeads(); return true;
+  },
+  async update(id, patch) {
+    patch = Object.assign({}, patch, { updated: new Date().toISOString() });
+    if (this.mode === "db") {
+      try { await this.col.doc(id).update(patch); return true; } catch (e) { return this.fail(e); }
+    }
+    const j = this.jobs.find((x) => x.id === id); if (j) Object.assign(j, patch);
+    this.saveLocal(); renderTracker(); return true;
+  },
+  async remove(id) {
+    if (this.mode === "db") {
+      try { await this.col.doc(id).delete(); return true; } catch (e) { return this.fail(e); }
+    }
+    this.jobs = this.jobs.filter((x) => x.id !== id); this.saveLocal(); renderTracker(); renderLeads(); return true;
+  },
+  fail(e) {
+    const code = e && e.code;
+    toast(code === "quota_exceeded" ? "Storage is full. Delete some closed jobs, then try again."
+      : code === "invalid_argument" ? "You can view this page but not save to it. Ask the owner for access."
+      : "Couldn't save just now. Try again in a moment.");
+    return false;
+  },
+};
+
+function stageOptions(sel, value) {
+  sel.replaceChildren(...STAGES.map((s) => h("option", { value: s.id, text: s.name })));
+  sel.value = value || "saved";
+}
+
+function followDue(j) {
+  return j.followUp && (j.stage === "applied" || j.stage === "interview") && j.followUp <= todayISO();
+}
+
+function renderTracker() {
+  const jobs = Tracker.jobs;
+  const badge = $("#storeBadge");
+  if (Tracker.mode === "db") { badge.textContent = "Saved to your Claude account · private to you"; badge.classList.remove("local"); $("#footStore").textContent = "Applications are private to you and sync across devices."; }
+  else { badge.textContent = "Saved in this browser only"; badge.classList.add("local"); $("#footStore").textContent = "Applications are saved in this browser."; }
+
+  const count = (id) => jobs.filter((j) => j.stage === id).length;
+  const due = jobs.filter(followDue).length;
+  const week = jobs.filter((j) => j.applied && daysAgo(j.applied) != null && daysAgo(j.applied) <= 6).length;
+  const stats = $("#stats");
+  stats.replaceChildren(
+    ...STAGES.map((s) => h("div", { class: "stat" }, h("dt", { text: s.name }), h("dd", { text: count(s.id) }))),
+    h("div", { class: "stat" }, h("dt", { text: "Applied this week" }), h("dd", { text: week })),
+    h("div", { class: "stat" + (due ? " alert" : "") }, h("dt", { text: "Follow-ups due" }), h("dd", { text: due })),
+  );
+
+  const board = $("#board");
+  board.replaceChildren();
+  for (const s of STAGES) {
+    const list = jobs.filter((j) => (j.stage || "saved") === s.id)
+      .sort((a, b) => (followDue(b) - followDue(a)) || String(b.updated || "").localeCompare(String(a.updated || "")));
+    const body = h("div", { class: "col-body" });
+    if (!list.length) body.append(h("div", { class: "col-empty", text: s.id === "saved" ? "Track a lead, or add a job you've found." : "Nothing here yet." }));
+    for (const j of list) body.append(jobCard(j));
+    board.append(h("div", { class: "col" }, h("div", { class: "col-h" }, h("h3", { text: s.name }), h("span", { text: list.length })), body));
+  }
+}
+
+function jobCard(j) {
+  const url = safeUrl(j.url);
+  const title = url ? h("a", { href: url, target: "_blank", rel: "noopener", text: j.title || "Untitled role" }) : (j.title || "Untitled role");
+  const sel = h("select", { "aria-label": "Stage for " + (j.title || "job") });
+  stageOptions(sel, j.stage);
+  sel.addEventListener("change", () => {
+    const patch = { stage: sel.value };
+    if (sel.value === "applied" && !j.applied) { patch.applied = todayISO(); if (!j.followUp) patch.followUp = addDays(todayISO(), 7); }
+    Tracker.update(j.id, patch);
+  });
+  const dates = [];
+  if (j.applied) dates.push("Applied " + fmtDate(j.applied));
+  if (j.followUp) dates.push(h("span", { class: followDue(j) ? "due" : null, text: (followDue(j) ? "Follow up due " : "Follow up ") + fmtDate(j.followUp) }));
+  const acts = h("div", { class: "job-acts" }, sel);
+  if (Tracker.confirmDel === j.id) {
+    acts.append(h("span", { class: "confirm", text: "Delete?" }),
+      h("button", { type: "button", class: "btn small danger", text: "Delete", onclick: () => { Tracker.confirmDel = null; Tracker.remove(j.id); } }),
+      h("button", { type: "button", class: "btn small", text: "Keep", onclick: () => { Tracker.confirmDel = null; renderTracker(); } }));
+  } else {
+    acts.append(h("button", { type: "button", class: "btn small", text: "Edit", onclick: () => openForm(j) }),
+      h("button", { type: "button", class: "btn small ghost danger", text: "Delete", onclick: () => { Tracker.confirmDel = j.id; renderTracker(); } }));
+  }
+  const meta = [j.company, j.area].filter(Boolean).join(" · ");
+  return h("div", { class: "job" },
+    h("h4", null, title),
+    meta ? h("div", { class: "co", text: meta + (j.salary ? " · " + j.salary : "") }) : (j.salary ? h("div", { class: "co", text: j.salary }) : null),
+    dates.length ? h("div", { class: "dates" }, dates.flatMap((d, i) => (i ? [" · ", d] : [d]))) : null,
+    j.notes ? h("div", { class: "notes", text: j.notes }) : null,
+    acts);
+}
+
+const FORM_FIELDS = { jTitle: "title", jCompany: "company", jArea: "area", jUrl: "url", jSalary: "salary", jSource: "source", jStage: "stage", jApplied: "applied", jFollow: "followUp", jContact: "contact", jNotes: "notes" };
+function openForm(job) {
+  Tracker.editing = job ? job.id : null;
+  stageOptions($("#jStage"), job ? job.stage : "saved");
+  for (const [id, key] of Object.entries(FORM_FIELDS)) {
+    if (id === "jStage") continue;
+    const el = $("#" + id);
+    el.value = job && job[key] != null ? job[key] : (id === "jSource" ? "SEEK" : "");
+  }
+  $("#formTitle").textContent = job ? "Edit job" : "Add a job";
+  $("#jSave").textContent = job ? "Save changes" : "Save job";
+  $("#formMsg").textContent = "";
+  $("#jobForm").hidden = false;
+  $("#addToggle").hidden = true;
+  showSheet("tracker");
+  $("#jTitle").focus();
+}
+function closeForm() { $("#jobForm").hidden = true; $("#addToggle").hidden = false; Tracker.editing = null; }
+function bindTracker() {
+  $("#addToggle").addEventListener("click", () => openForm(null));
+  $("#jCancel").addEventListener("click", closeForm);
+  $("#jobForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = {};
+    for (const [id, key] of Object.entries(FORM_FIELDS)) data[key] = $("#" + id).value.trim();
+    if (!data.title) { $("#formMsg").textContent = "Add the role title first."; $("#jTitle").focus(); return; }
+    if (data.url && !safeUrl(data.url)) { $("#formMsg").textContent = "The ad link should start with https://"; $("#jUrl").focus(); return; }
+    if (data.stage === "applied" && !data.applied) data.applied = todayISO();
+    if (data.stage === "applied" && !data.followUp) data.followUp = addDays(data.applied, 7);
+    const ok = Tracker.editing ? await Tracker.update(Tracker.editing, data) : await Tracker.add(data);
+    if (ok) { closeForm(); toast(Tracker.editing ? "Saved" : "Job added"); }
+  });
+}
+
+/* =====================================================================
+   LEADS (shared, kept fresh by Claude)
+   ===================================================================== */
+const FAMILIES = [
+  { id: "all", name: "All" }, { id: "drafting", name: "Drafting" }, { id: "design", name: "Building design" },
+  { id: "management", name: "Management" }, { id: "product", name: "Product" }, { id: "bim", name: "BIM" },
+];
+const Leads = { list: [], state: "loading", fam: "all", region: "all" };
+
+async function connectLeads() {
+  const db = await platform("db");
+  if (!db) { Leads.state = "offline"; renderLeads(); return; }
+  db.collection("leads").onSnapshot((snap) => {
+    Leads.list = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id }));
+    Leads.state = "ready"; renderLeads();
+  }, () => { Leads.state = "offline"; renderLeads(); });
+}
+
+// rank: Claude orders leads by how fresh and well-evidenced they are (1 = best)
+const leadSortKey = (l) => (Number.isFinite(Number(l.rank)) ? Number(l.rank) : 999);
+
+function renderLeads() {
+  const list = $("#leadsList"), empty = $("#leadsEmpty");
+  const all = Leads.list.filter((l) => l && l.title);
+  const regions = ["all", ...new Set(all.map((l) => l.region).filter(Boolean))];
+  const famBox = $("#leadFam");
+  famBox.replaceChildren(...FAMILIES.filter((f) => f.id === "all" || all.some((l) => l.family === f.id)).map((f) => {
+    const n = f.id === "all" ? all.length : all.filter((l) => l.family === f.id).length;
+    return h("button", { type: "button", "aria-pressed": String(Leads.fam === f.id), text: f.name + " " + n,
+      onclick: () => { Leads.fam = f.id; renderLeads(); } });
+  }));
+  const regBox = $("#leadRegion");
+  regBox.replaceChildren(...(regions.length > 2 ? regions : []).map((r) =>
+    h("button", { type: "button", "aria-pressed": String(Leads.region === r), text: r === "all" ? "All areas" : r,
+      onclick: () => { Leads.region = r; renderLeads(); } })));
+
+  $("#tbLeads").textContent = Leads.state === "ready" ? String(all.length) : "–";
+  $("#leadsBadge").replaceChildren(all.length ? h("span", { class: "badge-n", text: all.length }) : "");
+
+  const shown = all.filter((l) => (Leads.fam === "all" || l.family === Leads.fam) && (Leads.region === "all" || l.region === Leads.region))
+    .sort((a, b) => leadSortKey(a) - leadSortKey(b));
+
+  const checked = all.map((l) => l.checked).filter(Boolean).sort().pop();
+  $("#leadsMeta").textContent = Leads.state === "ready" && all.length
+    ? "Found by Claude" + (checked ? ", last checked " + fmtDate(checked) : "") + ". Ads close quickly, so open each one before you apply. Ask Claude in your chat to refresh this list."
+    : "Openings found across SEEK, Indeed, LinkedIn, Jora and builder careers pages.";
+
+  list.replaceChildren();
+  empty.hidden = true;
+  if (Leads.state === "loading") { empty.hidden = false; empty.replaceChildren(h("b", { text: "Loading leads" }), "Fetching the latest openings…"); return; }
+  if (Leads.state === "offline") {
+    empty.hidden = false;
+    empty.replaceChildren(h("b", { text: "Leads live in the published page" }), "Open this page on claude.ai to see the openings Claude has found. Everything else here works offline.");
+    return;
+  }
+  if (!shown.length) {
+    empty.hidden = false;
+    empty.replaceChildren(h("b", { text: all.length ? "No leads match" : "No leads yet" }), all.length ? "Try another role family or area." : "Ask Claude in your chat to find current openings. They will appear here.");
+    return;
+  }
+  const tracked = new Set(Tracker.jobs.map((j) => j.leadId).filter(Boolean));
+  for (const l of shown) list.append(leadCard(l, tracked.has(l.id)));
+}
+
+function leadCard(l, isTracked) {
+  const ad = safeUrl(l.url);
+  const seenAt = safeUrl(l.seenAt);
+  const named = l.company && !/recruiter|not (shown|named)|confidential|^employer/i.test(l.company);
+  const core = l.title.split(/\s[–—-]\s|\(/)[0].replace(/["]/g, "").trim();
+  const seekFind = "https://au.seek.com/jobs?" + qs({ keywords: '"' + core + '"' + (named ? " " + l.company : ""), where: l.seekWhere || "All Brisbane QLD" });
+  const age = daysAgo(l.posted);
+  const whenTxt = l.posted && /^\d{4}-\d{2}-\d{2}/.test(l.posted)
+    ? "Posted " + fmtDate(l.posted) + (age != null ? " · " + (age <= 0 ? "today" : age + "d ago") : "")
+    : (l.postedNote || "Posting date not confirmed");
+  const pill = l.status === "verified" ? h("span", { class: "pill ok", text: "Checked open" })
+    : h("span", { class: "pill seen", text: "Seen in search · verify" });
+  const trackBtn = h("button", { type: "button", class: "btn small" + (isTracked ? "" : " primary"), disabled: isTracked, text: isTracked ? "Tracking ✓" : "Track" });
+  trackBtn.addEventListener("click", async () => {
+    trackBtn.disabled = true;
+    const ok = await Tracker.add({ title: l.title, company: l.company || "", area: l.area || "", url: ad || seenAt || "", salary: l.salary || "", source: l.source || "", stage: "saved", leadId: l.id, notes: l.note || "" });
+    if (ok) toast("Added to My applications"); else trackBtn.disabled = false;
+  });
+  const meta = [l.area, l.workType].filter(Boolean);
+  return h("article", { class: "lead" },
+    h("div", null,
+      h("h3", null, ad ? h("a", { href: ad, target: "_blank", rel: "noopener", text: l.title }) : l.title),
+      h("div", { class: "co", text: l.company || "Employer not named" }),
+      h("div", { class: "meta" }, meta.map((m) => h("span", { text: m })), l.salary ? h("span", { class: "sal", text: l.salary }) : null),
+      l.note ? h("p", { class: "note", text: l.note }) : null),
+    h("div", { class: "side" },
+      h("span", { class: "when", text: whenTxt }), pill,
+      h("div", { class: "acts" },
+        ad ? h("a", { class: "btn small", href: ad, target: "_blank", rel: "noopener", text: "Open ad ↗" }) : null,
+        h("a", { class: "btn small", href: seekFind, target: "_blank", rel: "noopener", text: "Find on SEEK ↗" }),
+        !ad && seenAt ? h("a", { class: "btn small", href: seenAt, target: "_blank", rel: "noopener", text: "Where seen ↗" }) : null,
+        trackBtn)));
+}
+
+/* =====================================================================
+   DIRECTORY
+   ===================================================================== */
+const Dir = { q: "", cat: "all" };
+function renderDirectory() {
+  const cats = [{ id: "all", name: "All" }, ...DIR_CATS];
+  $("#dirCats").replaceChildren(...cats.map((c) => {
+    const n = c.id === "all" ? DIRECTORY.length : DIRECTORY.filter((d) => d.c === c.id).length;
+    return h("button", { type: "button", "aria-pressed": String(Dir.cat === c.id), text: c.name + " " + n, onclick: () => { Dir.cat = c.id; renderDirectory(); } });
+  }));
+  const q = Dir.q.toLowerCase();
+  const box = $("#dirList");
+  box.replaceChildren();
+  let total = 0;
+  for (const c of DIR_CATS) {
+    if (Dir.cat !== "all" && Dir.cat !== c.id) continue;
+    const items = DIRECTORY.filter((d) => d.c === c.id && (!q || (d.n + " " + (d.note || "") + " " + c.name).toLowerCase().includes(q)));
+    if (!items.length) continue;
+    total += items.length;
+    box.append(h("div", { class: "dir-sec" },
+      h("h2", null, c.name, h("span", { text: items.length + (c.blurb ? " · " + c.blurb : "") })),
+      h("div", { class: "dir-list" }, items.map(dirEntry))));
+  }
+  if (!total) box.append(h("div", { class: "empty" }, h("b", { text: "Nothing matches" }), "Try a shorter search, such as a suburb or “builder”."));
+}
+function dirEntry(d) {
+  const links = [];
+  const u = safeUrl(d.u);
+  if (u) links.push(h("a", { href: u, target: "_blank", rel: "noopener", text: (d.lt || "Careers") + " ↗" }));
+  const name = d.sn || d.n;
+  const isOrg = d.c !== "industry" && d.c !== "gov";
+  if (isOrg && !d.noSearch) {
+    links.push(h("a", { href: "https://au.seek.com/jobs?" + qs({ keywords: '"' + name.replace(/"/g, "") + '"', where: "QLD" }), target: "_blank", rel: "noopener", text: "SEEK ↗" }));
+    links.push(h("a", { href: "https://www.linkedin.com/jobs/search/?" + qs({ keywords: name, location: "Queensland, Australia" }), target: "_blank", rel: "noopener", text: "LinkedIn ↗" }));
+  }
+  if (!u) links.push(h("a", { href: "https://www.google.com/search?" + qs({ q: name + (d.c === "industry" ? " Queensland" : d.c === "recruiters" ? " recruitment jobs Brisbane" : " careers") }), target: "_blank", rel: "noopener", text: (d.c === "industry" ? "Find website" : d.c === "recruiters" ? "Find their jobs page" : "Find careers page") + " ↗" }));
+  return h("div", { class: "ent" }, h("b", { text: d.n }), d.note ? h("p", { text: d.note }) : null, h("div", { class: "links" }, links));
+}
+function bindDirectory() {
+  let t;
+  $("#dirQ").addEventListener("input", (e) => { clearTimeout(t); t = setTimeout(() => { Dir.q = e.target.value.trim(); renderDirectory(); }, 150); });
+}
+
+/* =====================================================================
+   AD CHECK
+   ===================================================================== */
+const SKILLS = [
+  // Software
+  { id: "archicad", cat: "Software", label: "Archicad", re: /\barchi\s?cad\b/i },
+  { id: "revit", cat: "Software", label: "Revit", re: /\brevit\b/i },
+  { id: "autocad", cat: "Software", label: "AutoCAD", re: /\bauto\s?cad\b/i },
+  { id: "sketchup", cat: "Software", label: "SketchUp", re: /\bsketch\s?up\b/i },
+  { id: "chief", cat: "Software", label: "Chief Architect", re: /\bchief architect\b/i },
+  { id: "vectorworks", cat: "Software", label: "Vectorworks", re: /\bvectorworks\b/i },
+  { id: "render", cat: "Software", label: "Rendering (Twinmotion, Lumion, Enscape, V-Ray)", re: /\b(twinmotion|lumion|enscape|v-?ray|rendering|renders?)\b/i },
+  { id: "bimcloud", cat: "Software", label: "BIMcloud / Teamwork", re: /\b(bimcloud|teamwork)\b/i },
+  { id: "navis", cat: "Software", label: "Navisworks / Solibri (clash detection)", re: /\b(navisworks|solibri|clash detection)\b/i },
+  { id: "bluebeam", cat: "Software", label: "Bluebeam", re: /\bbluebeam\b/i },
+  { id: "adobe", cat: "Software", label: "Adobe (Photoshop, InDesign)", re: /\b(adobe|photoshop|indesign|illustrator)\b/i },
+  { id: "excel", cat: "Software", label: "Excel / MS Office", re: /\b(excel|ms office|microsoft office)\b/i },
+  { id: "bim", cat: "Software", label: "BIM workflows", re: /\bbim\b/i },
+  // Codes & compliance
+  { id: "ncc", cat: "Codes & compliance", label: "NCC / BCA", re: /\b(ncc|bca|national construction code|building code of australia)\b/i },
+  { id: "qdc", cat: "Codes & compliance", label: "Queensland Development Code", re: /\b(qdc|queensland development code)\b/i },
+  { id: "as", cat: "Codes & compliance", label: "Australian Standards (AS 1684, AS 3740…)", re: /\b(australian standards?|as\s?\d{4})\b/i },
+  { id: "energy", cat: "Codes & compliance", label: "NatHERS / energy efficiency", re: /\b(nathers|energy (efficiency|rating|assessment)|7[- ]star)\b/i },
+  { id: "lhd", cat: "Codes & compliance", label: "Livable Housing Design", re: /\blivable housing\b/i },
+  { id: "bal", cat: "Codes & compliance", label: "Bushfire (BAL / AS 3959)", re: /\b(bal|bushfire|as\s?3959)\b/i },
+  { id: "approvals", cat: "Codes & compliance", label: "Building & council approvals (BA / DA)", re: /\b(building approvals?|council approvals?|development applications?|\bda\b|town planning|certifier)\b/i },
+  { id: "qbcc", cat: "Codes & compliance", label: "QBCC licence", re: /\bqbcc\b/i },
+  { id: "bdaq", cat: "Codes & compliance", label: "BDAQ / BDA membership", re: /\b(bdaq|building designers association|bda)\b/i },
+  // Documentation
+  { id: "working", cat: "Documentation", label: "Working / construction drawings", re: /\b(working drawings|construction (drawings|documentation|documents)|contract drawings|tender drawings)\b/i },
+  { id: "concept", cat: "Documentation", label: "Concept & sketch design", re: /\b(concept|sketch) design\b|\bconcepts?\b/i },
+  { id: "sitings", cat: "Documentation", label: "Sitings & site plans", re: /\b(sitings?|site plans?|siting plans?)\b/i },
+  { id: "measure", cat: "Documentation", label: "Site measures & as-builts", re: /\b(site measure|measure ?up|as[- ]built|existing conditions)\b/i },
+  { id: "facades", cat: "Documentation", label: "Facade & floor plan design", re: /\b(fa[cç]ades?|floor ?plans?|elevations)\b/i },
+  { id: "details", cat: "Documentation", label: "Slab, framing & construction details", re: /\b(slab|framing|construction details|detailing)\b/i },
+  { id: "consultants", cat: "Documentation", label: "Consultant coordination (engineers, certifiers)", re: /\b(consultants?|engineers?|coordinat(e|ion) with)\b/i },
+  { id: "variations", cat: "Documentation", label: "Pre-start, variations & selections", re: /\b(pre-?start|variations?|selections?|contract changes)\b/i },
+  { id: "templates", cat: "Documentation", label: "CAD standards, templates & libraries", re: /\b(cad standards?|templates?|object librar(y|ies)|drafting standards)\b/i },
+  // Residential context
+  { id: "volume", cat: "Residential context", label: "Volume / project home builder", re: /\b(volume|project) (home )?build(er|ing)|\bproduction (drafting|homes?)\b/i },
+  { id: "custom", cat: "Residential context", label: "Custom & luxury homes", re: /\b(custom|luxury|architectural) homes?\b/i },
+  { id: "multires", cat: "Residential context", label: "Townhouses & multi-residential", re: /\b(townhouses?|multi[- ]?res(idential)?|duplex|apartments?|units)\b/i },
+  { id: "reno", cat: "Residential context", label: "Renovations & extensions", re: /\b(renovations?|extensions?|alterations)\b/i },
+  { id: "display", cat: "Residential context", label: "Display homes & house-and-land", re: /\b(display homes?|house (and|&) land)\b/i },
+  { id: "modular", cat: "Residential context", label: "Modular / prefab / transportable", re: /\b(modular|prefab(ricated)?|transportable)\b/i },
+  { id: "commercial", cat: "Residential context", label: "Commercial projects", re: /\bcommercial\b/i },
+  // Leadership & product
+  { id: "team", cat: "Leadership & product", label: "Leading a team", re: /\b(lead(ing)? a team|team lead(er)?|manag(e|ing) (a|the) team|direct reports|people leader|mentor(ing)?)\b/i },
+  { id: "workflow", cat: "Leadership & product", label: "Workflow, resourcing & KPIs", re: /\b(workflow|resourc(e|ing)|kpis?|turnaround|throughput|deadlines)\b/i },
+  { id: "qa", cat: "Leadership & product", label: "Quality checking & design reviews", re: /\b(quality (assurance|control|check)|qa|design reviews?|checking drawings)\b/i },
+  { id: "range", cat: "Leadership & product", label: "House design range / product development", re: /\b(design range|product range|new designs?|product development|range development|house designs?)\b/i },
+  { id: "cost", cat: "Leadership & product", label: "Cost, value engineering & estimating", re: /\b(value engineer(ing)?|cost (control|plans?|efficien)|estimat(ing|ion|es)|budgets?)\b/i },
+  { id: "market", cat: "Leadership & product", label: "Market & competitor research", re: /\b(market research|competitor|customer insights?|market trends)\b/i },
+  { id: "stake", cat: "Leadership & product", label: "Stakeholder & client management", re: /\b(stakeholders?|client (liaison|meetings|management)|customer facing)\b/i },
+  { id: "suppliers", cat: "Leadership & product", label: "Supplier & trade engagement", re: /\b(suppliers?|trades?|procurement)\b/i },
+];
+const SKILL_CATS = [...new Set(SKILLS.map((s) => s.cat))];
+const DEFAULT_MINE = ["archicad", "working", "facades", "ncc", "qdc", "volume", "sitings", "details"];
+let mySkills = new Set(local.get("mySkills", DEFAULT_MINE));
+
+const EXAMPLE_AD = `EXAMPLE AD (replace this with a real one)
+
+Senior Draftsperson – Residential (Archicad)
+South-east Brisbane · Full time · $95,000 – $110,000 + super
+
+We are a growing Queensland home builder looking for a Senior Draftsperson to join our drafting team. You will prepare working drawings, sitings and facade details for our house design range, and help develop new designs with our product team.
+
+About you:
+• 5+ years residential drafting experience, ideally with a volume builder
+• Advanced Archicad skills (BIMcloud/Teamwork a plus)
+• Sound knowledge of the NCC, Queensland Development Code and relevant Australian Standards
+• Experience preparing documentation for building approvals
+• Able to mentor junior drafters and help manage workflow and turnaround times
+• Experience with Revit or SketchUp is desirable
+
+Hybrid work available after probation.`;
+
+function analyseAd(text) {
+  const found = SKILLS.filter((s) => s.re.test(text));
+  const have = found.filter((s) => mySkills.has(s.id));
+  const gaps = found.filter((s) => !mySkills.has(s.id));
+  const facts = [];
+  const sal = text.match(/\$\s?\d{2,3}(?:[,\s]?\d{3})?k?(?:\s?(?:-|–|to)\s?\$?\s?\d{2,3}(?:[,\s]?\d{3})?k?)?(?:\s?(?:\+\s?super|per hour|\/hr|p\.?h\.?|ph))?/i);
+  if (sal) facts.push(["Salary", sal[0].replace(/\s+/g, " ")]);
+  const yrs = text.match(/(\d{1,2})\s?\+?\s?(?:-|–|to)?\s?\d{0,2}\s?\+?\s?years?/i);
+  if (yrs) facts.push(["Experience", yrs[0].replace(/\s+/g, " ")]);
+  const wt = text.match(/\b(full[- ]time|part[- ]time|contract|casual|temporary|permanent)\b/i);
+  if (wt) facts.push(["Work type", wt[0]]);
+  const flex = text.match(/\b(hybrid|work from home|wfh|remote|flexible work(ing)?|9[- ]day fortnight)\b/i);
+  if (flex) facts.push(["Flexibility", flex[0]]);
+  const area = text.match(/\b(brisbane|gold coast|sunshine coast|ipswich|logan|moreton bay|redlands?|toowoomba|springwood|north lakes|milton|fortitude valley|newstead|south brisbane)\b/i);
+  if (area) facts.push(["Location", area[0]]);
+  return { found, have, gaps, facts };
+}
+
+function renderMySkills() {
+  const box = $("#mySkills");
+  box.replaceChildren(...SKILL_CATS.map((cat) => h("div", null,
+    h("div", { class: "hint", style: "margin:0 0 5px", text: cat }),
+    h("div", { class: "chips" }, SKILLS.filter((s) => s.cat === cat).map((s) =>
+      h("button", { type: "button", class: "chip", "aria-pressed": String(mySkills.has(s.id)), text: s.label, onclick: () => {
+        if (mySkills.has(s.id)) mySkills.delete(s.id); else mySkills.add(s.id);
+        local.set("mySkills", [...mySkills]); renderMySkills(); renderFit();
+      } }))))));
+  $("#mySkillsCount").textContent = "· " + mySkills.size + " ticked";
+}
+
+function renderFit() {
+  const text = $("#adText").value;
+  const box = $("#fit");
+  box.replaceChildren();
+  const isExample = text.startsWith("EXAMPLE AD");
+  $("#adHint").textContent = isExample ? "This is an example ad so you can see how the check works. Paste a real ad over it." : (text.trim() ? text.trim().split(/\s+/).length + " words" : "");
+  if (!text.trim()) {
+    box.append(h("div", { class: "empty" }, h("b", { text: "Paste an ad to check it" }), "Copy the full ad text from SEEK, LinkedIn or a careers page."));
+    return;
+  }
+  const r = analyseAd(text);
+  const pct = r.found.length ? Math.round((r.have.length / r.found.length) * 100) : 0;
+  box.append(
+    h("div", { class: "meter" },
+      h("div", { class: "meter-top" }, h("h2", { text: "Requirements you cover" + (isExample ? " (example)" : "") }), h("b", { text: r.found.length ? pct + "%" : "–" })),
+      h("div", { class: "meter-bar", role: "img", "aria-label": pct + "% covered" }, h("i", { style: "width:" + pct + "%" })),
+      h("div", { class: "hint", style: "margin:0", text: r.found.length ? r.have.length + " of " + r.found.length + " skills this ad mentions" : "No recognised building design skills in this text." })),
+    r.facts.length ? h("dl", { class: "facts" }, r.facts.map(([k, v]) => h("div", null, h("dt", { text: k }), h("dd", { text: v })))) : null,
+    r.have.length ? h("div", null, h("h2", { style: "margin-bottom:8px", text: "You match" }), h("div", { class: "taglist" }, r.have.map((s) => h("span", { class: "tag have", text: s.label })))) : null,
+    r.gaps.length ? h("div", null, h("h2", { style: "margin-bottom:8px", text: "Gaps to address" }),
+      h("p", { class: "hint", style: "margin:0 0 8px", text: "Mention related experience in your cover letter, or tick it under My skills if you have it." }),
+      h("div", { class: "taglist" }, r.gaps.map((s) => h("span", { class: "tag gap", text: s.label })))) : null,
+    r.found.length ? h("div", null, h("h2", { style: "margin-bottom:8px", text: "Keywords to repeat in your resume" }),
+      h("p", { class: "hint", style: "margin:0 0 8px", text: "Screening software matches these words. Use the ad's own spelling." }),
+      h("div", { class: "taglist" }, r.found.map((s) => { const m = text.match(s.re); return h("span", { class: "tag", text: m ? m[0] : s.label }); }))) : null,
+  );
+}
+
+const AI = { sample: null, ctl: null };
+function aiCopy(code) {
+  return ({
+    not_granted: "Claude wasn't allowed for this page.", sampling_disabled: "Claude isn't available on this account.",
+    rate_limited: "You've hit a usage limit. Try again later.", session_expired: "Sign in to claude.ai again, then retry.",
+    refused: "Claude couldn't help with that text. Try trimming the ad.", prompt_too_large: "The ad is too long. Paste just the role description.",
+    empty_completion: "Claude returned nothing. Try again with a shorter ad.",
+  })[code] || "Something went wrong. Try again in a moment.";
+}
+async function connectAI() {
+  const sample = await platform("sample");
+  if (!sample) return;
+  AI.sample = sample;
+  $("#aiBox").hidden = false;
+  $("#aboutMe").value = local.get("aboutMe", "");
+  let t;
+  $("#aboutMe").addEventListener("input", (e) => { clearTimeout(t); t = setTimeout(() => local.set("aboutMe", e.target.value), 300); });
+  $("#aiStop").addEventListener("click", () => AI.ctl && AI.ctl.abort());
+  $("#aiGo").addEventListener("click", runAI);
+}
+async function runAI() {
+  const ad = $("#adText").value.trim();
+  const out = $("#aiOut"), msg = $("#aiMsg"), go = $("#aiGo"), stop = $("#aiStop");
+  if (!ad || ad.startsWith("EXAMPLE AD")) { msg.textContent = "Paste a real job ad first."; return; }
+  const r = analyseAd(ad);
+  const mine = SKILLS.filter((s) => mySkills.has(s.id)).map((s) => s.label);
+  const prompt = [
+    "You are helping an experienced building designer / draftsperson in Brisbane, Australia apply for a job.",
+    "Use Australian English. Be specific and plain; no buzzwords, no invented facts about the candidate.",
+    "",
+    "Write three short sections with these exact headings:",
+    "RESUME BULLETS – 5 achievement-style bullets the candidate could add or adapt, echoing the ad's wording where truthful.",
+    "COVER LETTER OPENING – one paragraph of about 110 words.",
+    "QUESTIONS TO ASK – 3 sharp questions for the interview.",
+    "If the candidate lacks something the ad asks for, suggest an honest way to frame related experience; never claim it.",
+    "",
+    "ABOUT THE CANDIDATE:", ($("#aboutMe").value.trim() || "(not provided)"),
+    "SKILLS THEY TICKED: " + (mine.join(", ") || "(none)"),
+    "GAPS DETECTED: " + (r.gaps.map((s) => s.label).join(", ") || "(none)"),
+    "",
+    "JOB AD:", ad.slice(0, 9000),
+  ].join("\n");
+  AI.ctl = new AbortController();
+  go.disabled = true; stop.hidden = false; out.textContent = ""; msg.textContent = "Thinking…";
+  try {
+    const res = await AI.sample(prompt, { signal: AI.ctl.signal, onText: ({ text }) => { out.textContent = text; msg.textContent = "Writing…"; } });
+    msg.textContent = res.truncated ? "Cut short. Try a shorter ad." : "Done. Edit before you use it.";
+  } catch (e) {
+    out.textContent = (e && e.code !== "refused" && e.text) || "";
+    msg.textContent = e && e.code === "cancelled" ? "Stopped." : aiCopy(e && e.code);
+    if (e && (e.code === "not_granted" || e.code === "sampling_disabled")) $("#aiBox").hidden = true;
+  } finally {
+    go.disabled = false; stop.hidden = true;
+  }
+}
+function bindAdCheck() {
+  const ta = $("#adText");
+  ta.value = local.get("adText", EXAMPLE_AD);
+  let t;
+  ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { local.set("adText", ta.value); renderFit(); }, 200); });
+  $("#adClear").addEventListener("click", () => { ta.value = ""; local.set("adText", ""); renderFit(); ta.focus(); });
+}
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+function boot() {
+  const now = new Date();
+  $("#tbDate").textContent = now.getDate() + " " + MONTHS[now.getMonth()];
+  $("#tbBoards").textContent = String(BOARDS.length + MORE.length);
+  $("#tbEmployers").textContent = String(DIRECTORY.filter((d) => !["industry", "recruiters"].includes(d.c)).length);
+  renderGroups(); renderControls(); renderSearch(); bindSearch();
+  Tracker.loadLocal(); renderTracker(); bindTracker();
+  renderLeads();
+  renderDirectory(); bindDirectory();
+  bindAdCheck(); renderMySkills(); renderFit();
+  bindSheets();
+  Tracker.connect();
+  connectLeads();
+  connectAI();
+}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+</script>

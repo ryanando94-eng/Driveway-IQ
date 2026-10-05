@@ -1,0 +1,5 @@
+# Local settings for brisbane_design_jobs.py: API keys and search history stay on your machine
+brisbane_jobs_config.json
+brisbane_jobs_seen.json
+*.tmp
+__pycache__/
