@@ -11,11 +11,27 @@ Live version: https://claude.ai/artifact/VD2iXmbgWAr1qGRkysPPAp
 
 | Sheet | What it does |
 | --- | --- |
-| **A-101 Search** | Choose role families and titles, location, radius, date posted and work type. It builds a grid of ready-made searches on SEEK, Indeed, LinkedIn, Google Jobs, Jora, Adzuna and CareerOne, with one row per role family. It also gives you a boolean string to paste into saved searches, plus 12 niche and government boards. |
-| **A-102 Live leads** | Current openings Claude found (31 on 5 Oct 2026). Each has *Open ad*, *Find on SEEK* and *Track* buttons. Ads close quickly, so check before applying. Ask Claude to refresh the list. |
+| **A-101 Job feed** | A news feed of current Brisbane and South East Queensland ads, newest first and grouped by day. Ads added since your last visit are marked **New**. If ads arrive while you're reading, an "N new ads" button appears at the top. Each ad has *Open ad*, *Find on SEEK*, *Track* and *Not for me* buttons. The status line shows when the feed last updated and when the next check runs. On claude.ai, the owner also gets a *Check now* button. |
+| **A-102 Search** | Choose role families and titles, location, radius, date posted and work type. It builds a grid of ready-made searches on SEEK, Indeed, LinkedIn, Google Jobs, Jora, Adzuna and CareerOne, with one row per role family. It also gives you a boolean string to paste into saved searches, plus 12 niche and government boards. |
 | **A-103 My applications** | A private tracker with the stages Saved → Applied → Interview → Offer → Closed, follow-up reminders and notes. On claude.ai it syncs to your account. Opened as a local file, it saves in the browser. |
 | **A-104 Employers & boards** | 90+ South East Queensland employers, boards and recruiters: home builders, developers, commercial builders, modular builders, product manufacturers, councils and recruiters. Each has a careers link plus SEEK and LinkedIn searches. |
 | **A-105 Ad check** | Paste a job ad. It shows the requirements you already cover, the gaps, salary, years of experience and the keywords to repeat in your resume. On claude.ai it can also draft resume bullets and a cover letter opening for that ad. |
+
+### How the feed updates itself
+
+A Claude routine called **Brisbane design jobs feed** runs every day at 6:52 am and 12:52 pm
+Brisbane time. Each run starts a fresh Claude session that:
+
+* searches SEEK, Indeed, LinkedIn, Jora, Hatch, LiveHire, SmartJobs and builders' careers pages for new ads;
+* adds new ads to the page's `leads` collection, without duplicates;
+* marks ads older than 30 days as stale and clears them after 60 days;
+* records the run in `meta/feed`.
+
+Pages open at the time update straight away. When a run finishes, Claude can also send a
+notification to your phone.
+
+To change the schedule or pause it, open claude.ai → Routines. The page reads the check times from
+`meta/feed`, so update `times` there to match.
 
 Board URL formats were checked in October 2026. SEEK's search now runs on `au.seek.com`.
 

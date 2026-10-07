@@ -30,6 +30,12 @@
   --f-body: "Barlow", "Segoe UI", system-ui, -apple-system, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --r: 6px;
+  --fam-drafting: #1D5B95;
+  --fam-design: #2A7647;
+  --fam-management: #13202C;
+  --fam-product: #9A5B00;
+  --fam-bim: #6A4C9C;
+  --fam-other: #5A6B7A;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -39,6 +45,8 @@
     --red: #FF8F78; --red-wash: #3A2028; --ok: #78D3A0; --ok-wash: #15392A;
     --warn: #F1BE62; --warn-wash: #392E16;
     --shadow: 0 1px 0 rgba(0, 0, 0, .25), 0 10px 22px -14px rgba(0, 0, 0, .7);
+    --fam-drafting: #8DC3F2; --fam-design: #78D3A0; --fam-management: #E3ECF4;
+    --fam-product: #F1BE62; --fam-bim: #C4B1F2; --fam-other: #AABCCD;
     color-scheme: dark;
   }
 }
@@ -49,6 +57,8 @@
   --red: #FF8F78; --red-wash: #3A2028; --ok: #78D3A0; --ok-wash: #15392A;
   --warn: #F1BE62; --warn-wash: #392E16;
   --shadow: 0 1px 0 rgba(0, 0, 0, .25), 0 10px 22px -14px rgba(0, 0, 0, .7);
+  --fam-drafting: #8DC3F2; --fam-design: #78D3A0; --fam-management: #E3ECF4;
+  --fam-product: #F1BE62; --fam-bim: #C4B1F2; --fam-other: #AABCCD;
   color-scheme: dark;
 }
 
@@ -115,6 +125,15 @@ h1 .accent { color: var(--blue); }
 .tb-cells > div { padding: 10px 14px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
 .tb-cells dt { font: 500 11px/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); }
 .tb-cells dd { margin: 4px 0 0; font: 600 24px/1.1 var(--f-display); font-variant-numeric: tabular-nums; }
+/* Phones: a slim titleblock so the feed starts on the first screen */
+@media (max-width: 559px) {
+  .tb-name { padding: 14px 16px 12px; }
+  .lede { display: none; }
+  .tb-cells { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .tb-cells > div { padding: 7px 9px; }
+  .tb-cells dt { font-size: 9.5px; letter-spacing: .05em; }
+  .tb-cells dd { font-size: 19px; }
+}
 
 /* ---------- sheet tabs ---------- */
 .sheets {
@@ -301,31 +320,82 @@ details.howto { padding: 12px 16px; }
 details.howto summary { cursor: pointer; font-weight: 600; }
 details.howto ol { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; color: var(--ink-2); }
 
-/* ---------- leads ---------- */
+/* ---------- shared list bits ---------- */
 .filters { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-bottom: 14px; }
-.leads { display: grid; gap: 10px; }
-.lead {
-  display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 18px;
-  padding: 14px 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r);
-}
-@media (min-width: 760px) { .lead { grid-template-columns: minmax(0, 1fr) 250px; } }
-.lead h3 { font: 600 19px/1.2 var(--f-display); letter-spacing: .01em; }
-.lead h3 a { color: var(--ink); text-decoration: none; }
-.lead h3 a:hover { color: var(--blue); text-decoration: underline; }
-.lead .co { font-weight: 600; color: var(--ink-2); margin-top: 2px; }
-.lead .meta { font-size: 13.5px; color: var(--ink-2); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px 12px; }
-.lead .meta .sal { color: var(--ok); font-weight: 600; }
-.lead .note { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); }
-.lead .side { display: grid; gap: 8px; align-content: start; justify-items: start; }
-@media (min-width: 760px) { .lead .side { justify-items: end; text-align: right; } }
-.lead .when { font: 500 12.5px/1.35 var(--f-mono); color: var(--ink-3); }
-.lead .acts { display: flex; flex-wrap: wrap; gap: 6px; }
-@media (min-width: 760px) { .lead .acts { justify-content: flex-end; } }
 .empty {
   padding: 26px 20px; border: 1.5px dashed var(--rule); border-radius: var(--r); background: var(--sheet);
   color: var(--ink-2); text-align: center;
 }
 .empty b { display: block; color: var(--ink); font: 600 18px/1.3 var(--f-display); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+
+/* ---------- job feed ---------- */
+.feed-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (min-width: 980px) { .feed-grid { grid-template-columns: minmax(0, 760px) minmax(260px, 320px); justify-content: center; } }
+.feed-main { min-width: 0; }
+.feed-status {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px;
+  padding: 12px 16px; margin-bottom: 12px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r);
+}
+.fs-text { min-width: 0; }
+.live { display: inline-flex; align-items: center; gap: 9px; font-weight: 600; }
+.live i { width: 9px; height: 9px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px var(--ok-wash); flex: 0 0 auto; }
+.live.running i { background: var(--warn); box-shadow: 0 0 0 3px var(--warn-wash); animation: blink 1.2s ease-in-out infinite; }
+.live.error i { background: var(--red); box-shadow: 0 0 0 3px var(--red-wash); }
+@keyframes blink { 50% { opacity: .3; } }
+.feed-status .sub { font: 400 12.5px/1.45 var(--f-mono); color: var(--ink-3); margin-top: 2px; }
+.check-msg { flex-basis: 100%; font-size: 13.5px; color: var(--ink-2); }
+.newpill { position: sticky; top: calc(10px + env(safe-area-inset-top, 0px)); z-index: 6; display: flex; justify-content: center; height: 0; overflow: visible; }
+.newpill button {
+  border: 0; border-radius: 999px; padding: 8px 18px; cursor: pointer;
+  background: var(--blue); color: var(--on-blue); font-weight: 600; font-size: 14px; box-shadow: var(--shadow);
+}
+.day {
+  display: flex; align-items: center; gap: 10px; margin: 18px 0 9px;
+  font: 600 13px/1.2 var(--f-display); text-transform: uppercase; letter-spacing: .1em; color: var(--ink-3);
+}
+.day::after { content: ""; flex: 1; border-top: 1px solid var(--rule); }
+#feedList > .day:first-child { margin-top: 4px; }
+.post {
+  display: grid; gap: 8px; margin-bottom: 10px; padding: 14px 16px 12px; min-width: 0;
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r);
+}
+.post.dim { opacity: .62; }
+.post-h { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.mono {
+  flex: 0 0 auto; width: 38px; height: 38px; border-radius: 5px; display: grid; place-items: center;
+  font: 700 15px/1 var(--f-display); letter-spacing: .05em; color: var(--sheet); background: var(--fam-other);
+}
+.fam-drafting .mono { background: var(--fam-drafting); }
+.fam-design .mono { background: var(--fam-design); }
+.fam-management .mono { background: var(--fam-management); }
+.fam-product .mono { background: var(--fam-product); }
+.fam-bim .mono { background: var(--fam-bim); }
+.post-who { flex: 1; min-width: 0; line-height: 1.3; }
+.post-who b { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.post-who span { font-size: 13px; color: var(--ink-3); }
+.post-time { display: flex; align-items: center; gap: 7px; font: 500 12.5px/1 var(--f-mono); color: var(--ink-3); white-space: nowrap; }
+.post h4 { margin: 0; font: 600 21px/1.2 var(--f-display); letter-spacing: .01em; overflow-wrap: anywhere; }
+.post h4 a { color: var(--ink); text-decoration: none; }
+.post h4 a:hover { color: var(--blue); text-decoration: underline; }
+.chips2 { display: flex; flex-wrap: wrap; gap: 6px; }
+.kv { padding: 2px 8px 3px; border-radius: 4px; font-size: 13px; color: var(--ink-2); background: var(--paper); border: 1px solid var(--rule-soft); }
+.kv.sal { color: var(--ok); background: var(--ok-wash); border-color: transparent; font-weight: 600; }
+.post p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+.post-f { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding-top: 9px; margin-top: 2px; border-top: 1px dashed var(--rule); }
+.post-f .when { flex: 1 1 220px; font: 400 12px/1.45 var(--f-mono); color: var(--ink-3); }
+.post-f .acts { display: flex; flex-wrap: wrap; gap: 6px; }
+.feed-more { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
+.feed-side { display: grid; gap: 12px; min-width: 0; }
+@media (min-width: 980px) { .feed-side { position: sticky; top: calc(12px + env(safe-area-inset-top, 0px)); } }
+.side-box { padding: 14px 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); display: grid; gap: 10px; }
+.side-box p { margin: 0; font-size: 14px; color: var(--ink-2); }
+.side-box .hint { margin: 0; }
+dl.mini { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; }
+dl.mini dt { font: 500 10.5px/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+dl.mini dd { margin: 3px 0 0; font: 600 22px/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.due-note { color: var(--red) !important; font-weight: 600; }
+.quick { display: grid; gap: 7px; font-size: 14px; font-weight: 600; }
+.side-box .btn { justify-self: start; }
 
 /* ---------- tracker ---------- */
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 8px; margin-bottom: 14px; }
@@ -413,21 +483,36 @@ footer.foot { margin-top: 34px; padding-top: 14px; border-top: 1px solid var(--r
     <dl class="tb-cells">
       <div><dt>Boards</dt><dd id="tbBoards">–</dd></div>
       <div><dt>Employers</dt><dd id="tbEmployers">–</dd></div>
-      <div><dt>Live leads</dt><dd id="tbLeads">–</dd></div>
+      <div><dt>Live ads</dt><dd id="tbLeads">–</dd></div>
       <div><dt>Today</dt><dd id="tbDate">–</dd></div>
     </dl>
   </header>
 
   <nav class="sheets" role="tablist" aria-label="Sheets">
-    <button role="tab" id="tab-search" data-sheet="search" aria-controls="sheet-search" aria-selected="true"><span class="no">A-101</span>Search</button>
-    <button role="tab" id="tab-leads" data-sheet="leads" aria-controls="sheet-leads" aria-selected="false"><span class="no">A-102</span><span>Live leads<span id="leadsBadge"></span></span></button>
+    <button role="tab" id="tab-feed" data-sheet="feed" aria-controls="sheet-feed" aria-selected="true"><span class="no">A-101</span><span>Job feed<span id="feedBadge"></span></span></button>
+    <button role="tab" id="tab-search" data-sheet="search" aria-controls="sheet-search" aria-selected="false"><span class="no">A-102</span>Search</button>
     <button role="tab" id="tab-tracker" data-sheet="tracker" aria-controls="sheet-tracker" aria-selected="false"><span class="no">A-103</span>My applications</button>
     <button role="tab" id="tab-directory" data-sheet="directory" aria-controls="sheet-directory" aria-selected="false"><span class="no">A-104</span>Employers &amp; boards</button>
     <button role="tab" id="tab-adcheck" data-sheet="adcheck" aria-controls="sheet-adcheck" aria-selected="false"><span class="no">A-105</span>Ad check</button>
   </nav>
 
-  <!-- ===================== A-101 SEARCH ===================== -->
-  <section class="sheet" id="sheet-search" role="tabpanel" aria-labelledby="tab-search">
+  <!-- ===================== A-101 JOB FEED ===================== -->
+  <section class="sheet" id="sheet-feed" role="tabpanel" aria-labelledby="tab-feed">
+    <div class="feed-grid">
+      <div class="feed-main">
+        <div class="feed-status" id="feedStatus" aria-live="polite"></div>
+        <div class="filters" id="feedFilters"></div>
+        <div class="newpill" id="newPill" hidden><button type="button" id="newPillBtn"></button></div>
+        <div id="feedList"></div>
+        <div class="empty" id="feedEmpty" hidden></div>
+        <div class="feed-more" id="feedMore"></div>
+      </div>
+      <aside class="feed-side" id="feedSide" aria-label="Feed details"></aside>
+    </div>
+  </section>
+
+  <!-- ===================== A-102 SEARCH ===================== -->
+  <section class="sheet" id="sheet-search" role="tabpanel" aria-labelledby="tab-search" hidden>
     <div class="search-grid">
       <aside class="rail">
         <div class="panel">
@@ -496,20 +581,6 @@ footer.foot { margin-top: 34px; padding-top: 14px; border-top: 1px solid var(--r
         </details>
       </div>
     </div>
-  </section>
-
-  <!-- ===================== A-102 LEADS ===================== -->
-  <section class="sheet" id="sheet-leads" role="tabpanel" aria-labelledby="tab-leads" hidden>
-    <div class="sheet-h">
-      <h2>Live leads</h2>
-      <p id="leadsMeta">Openings found across SEEK, Indeed, LinkedIn, Jora and builder careers pages.</p>
-    </div>
-    <div class="filters">
-      <div id="leadFam" class="seg wrap"></div>
-      <div id="leadRegion" class="seg wrap"></div>
-    </div>
-    <div class="leads" id="leadsList"></div>
-    <div class="empty" id="leadsEmpty" hidden></div>
   </section>
 
   <!-- ===================== A-103 TRACKER ===================== -->
@@ -1036,9 +1107,10 @@ function bindSearch() {
 /* =====================================================================
    SHEETS (tabs)
    ===================================================================== */
-const SHEETS = ["search", "leads", "tracker", "directory", "adcheck"];
+const SHEETS = ["feed", "search", "tracker", "directory", "adcheck"];
 function showSheet(id, focus) {
-  if (!SHEETS.includes(id)) id = "search";
+  if (id === "leads") id = "feed";
+  if (!SHEETS.includes(id)) id = "feed";
   for (const s of SHEETS) {
     $("#sheet-" + s).hidden = s !== id;
     $("#tab-" + s).setAttribute("aria-selected", String(s === id));
@@ -1047,18 +1119,19 @@ function showSheet(id, focus) {
   local.set("sheet", id);
   if (focus) $("#tab-" + id).focus();
   try { if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id); } catch { /* sandboxed */ }
+  if (id === "feed") scheduleSeen();
 }
 function bindSheets() {
   $$(".sheets button").forEach((b) => b.addEventListener("click", () => showSheet(b.dataset.sheet)));
   $(".sheets").addEventListener("keydown", (e) => {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-    const cur = SHEETS.indexOf(local.get("sheet", "search"));
+    const cur = Math.max(0, SHEETS.indexOf(local.get("sheet", "feed")));
     const next = SHEETS[(cur + (e.key === "ArrowRight" ? 1 : SHEETS.length - 1)) % SHEETS.length];
     showSheet(next, true); e.preventDefault();
   });
   $$("[data-goto]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); showSheet(a.dataset.goto); window.scrollTo(0, 0); }));
   const fromHash = (location.hash || "").replace("#", "");
-  showSheet(SHEETS.includes(fromHash) ? fromHash : local.get("sheet", "search"));
+  showSheet(SHEETS.includes(fromHash) || fromHash === "leads" ? fromHash : local.get("sheet", "feed"));
 }
 
 /* =====================================================================
@@ -1068,6 +1141,20 @@ const platform = (name) => {
   try { return (window.claude && typeof window.claude.use === "function") ? window.claude.use(name).catch(() => null) : Promise.resolve(null); }
   catch { return Promise.resolve(null); }
 };
+// The viewer, looked up once: database, id (for private data) and whether they own the page
+let mePromise = null;
+function me() {
+  if (!mePromise) mePromise = (async () => {
+    const [db, user] = await Promise.all([platform("db"), platform("user")]);
+    let uid = null, owner = false;
+    if (user) {
+      try { uid = await user.id(); } catch { uid = null; }
+      try { owner = await user.isOwner(); } catch { owner = false; }
+    }
+    return { db, uid, owner };
+  })();
+  return mePromise;
+}
 
 /* =====================================================================
    TRACKER
@@ -1081,16 +1168,13 @@ const Tracker = {
   loadLocal() { this.jobs = local.get("jobs", []); },
   saveLocal() { local.set("jobs", this.jobs); },
   async connect() {
-    const [db, user] = await Promise.all([platform("db"), platform("user")]);
-    if (!db || !user) return;
-    let uid = null;
-    try { uid = await user.id(); } catch { uid = null; }
-    if (!uid) return;
+    const { db, uid } = await me();
+    if (!db || !uid) return;
     try { this.col = db.doc("data/users/" + uid + "/tracker").collection("jobs"); } catch { return; }
     this.mode = "db";
     this.col.onSnapshot((snap) => {
       this.jobs = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id }));
-      renderTracker(); renderLeads();
+      renderTracker(); renderFeed();
     }, () => { this.mode = "local"; this.col = null; this.loadLocal(); renderTracker(); toast("Couldn't reach your saved applications. Using this browser for now."); });
     renderTracker();
   },
@@ -1101,7 +1185,7 @@ const Tracker = {
     if (this.mode === "db") {
       try { await this.col.doc(id).set(doc); return true; } catch (e) { return this.fail(e); }
     }
-    this.jobs.push(Object.assign({ id }, doc)); this.saveLocal(); renderTracker(); renderLeads(); return true;
+    this.jobs.push(Object.assign({ id }, doc)); this.saveLocal(); renderTracker(); renderFeed(); return true;
   },
   async update(id, patch) {
     patch = Object.assign({}, patch, { updated: new Date().toISOString() });
@@ -1115,7 +1199,7 @@ const Tracker = {
     if (this.mode === "db") {
       try { await this.col.doc(id).delete(); return true; } catch (e) { return this.fail(e); }
     }
-    this.jobs = this.jobs.filter((x) => x.id !== id); this.saveLocal(); renderTracker(); renderLeads(); return true;
+    this.jobs = this.jobs.filter((x) => x.id !== id); this.saveLocal(); renderTracker(); renderFeed(); return true;
   },
   fail(e) {
     const code = e && e.code;
@@ -1229,101 +1313,346 @@ function bindTracker() {
 }
 
 /* =====================================================================
-   LEADS (shared, kept fresh by Claude)
+   JOB FEED (ads posted by Claude's scheduled checks, live from the db)
    ===================================================================== */
 const FAMILIES = [
   { id: "all", name: "All" }, { id: "drafting", name: "Drafting" }, { id: "design", name: "Building design" },
   { id: "management", name: "Management" }, { id: "product", name: "Product" }, { id: "bim", name: "BIM" },
 ];
-const Leads = { list: [], state: "loading", fam: "all", region: "all" };
+const Feed = {
+  all: [], known: null, held: new Set(), state: "loading", fam: "all", meta: null,
+  showOld: false, showHidden: false, mcp: null, checking: false, checkMsg: "", localRunAt: 0, cooldownUntil: 0,
+};
+// Per-viewer feed state: when you last looked (for "New" markers) and ads you dismissed
+const Prefs = { seenAt: local.get("feedSeenAt", ""), hidden: new Set(local.get("feedHidden", [])), baseline: null, ref: null, queue: Promise.resolve() };
 
-async function connectLeads() {
-  const db = await platform("db");
-  if (!db) { Leads.state = "offline"; renderLeads(); return; }
-  db.collection("leads").onSnapshot((snap) => {
-    Leads.list = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id }));
-    Leads.state = "ready"; renderLeads();
-  }, () => { Leads.state = "offline"; renderLeads(); });
+const ts = (iso) => { const t = Date.parse(iso || ""); return Number.isFinite(t) ? t : 0; };
+function relTime(iso, short) {
+  const t = ts(iso);
+  if (!t) return "";
+  const m = Math.max(0, Math.round((Date.now() - t) / 60000));
+  if (m < 1) return short ? "now" : "just now";
+  if (m < 60) return m + (short ? "m" : " min ago");
+  const hr = Math.round(m / 60);
+  if (hr < 24) return hr + (short ? "h" : " h ago");
+  const d = Math.round(hr / 24);
+  if (d < 7) return d + (short ? "d" : d === 1 ? " day ago" : " days ago");
+  return fmtDate(isoDate(new Date(t)));
+}
+function dayLabel(iso) {
+  const t = ts(iso);
+  if (!t) return "Earlier";
+  const d = new Date(t), today = new Date(), yest = new Date(Date.now() - 864e5);
+  if (d.toDateString() === today.toDateString()) return "Today";
+  if (d.toDateString() === yest.toDateString()) return "Yesterday";
+  return d.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" });
+}
+const isStale = (l) => l.stale === true || (/^\d{4}-\d{2}-\d{2}/.test(l.posted || "") && daysAgo(l.posted) > 45);
+const unreadCount = () => Feed.all.filter((l) => !isStale(l) && !Prefs.hidden.has(l.id) && ts(l.found) > ts(Prefs.seenAt)).length;
+const feedSort = (a, b) => (ts(b.found) - ts(a.found)) || ((Number(b.score) || 0) - (Number(a.score) || 0)) || ((Number(a.rank) || 999) - (Number(b.rank) || 999));
+
+function savePrefs() {
+  local.set("feedSeenAt", Prefs.seenAt);
+  local.set("feedHidden", [...Prefs.hidden]);
+  if (!Prefs.ref) return;
+  const body = { seenAt: Prefs.seenAt, hidden: [...Prefs.hidden].slice(-400) };
+  Prefs.queue = Prefs.queue.then(() => Prefs.ref.set(body)).catch(() => { /* kept in this browser */ });
+}
+let seenTimer = null;
+function scheduleSeen() {
+  clearTimeout(seenTimer);
+  if (Feed.state !== "ready" || $("#sheet-feed").hidden || document.hidden || !unreadCount()) return;
+  seenTimer = setTimeout(() => {
+    if ($("#sheet-feed").hidden || document.hidden) return;
+    Prefs.seenAt = new Date().toISOString();
+    savePrefs(); renderFeedBadge();
+  }, 4000);
 }
 
-// rank: Claude orders leads by how fresh and well-evidenced they are (1 = best)
-const leadSortKey = (l) => (Number.isFinite(Number(l.rank)) ? Number(l.rank) : 999);
+async function connectFeed() {
+  const { db, uid, owner } = await me();
+  if (!db) { Feed.state = "offline"; renderFeed(); return; }
+  if (uid) {
+    try {
+      Prefs.ref = db.doc("data/users/" + uid + "/prefs");
+      const snap = await Prefs.ref.get();
+      const d = snap.exists ? snap.data() : null;
+      if (d) {
+        if (ts(d.seenAt) > ts(Prefs.seenAt)) Prefs.seenAt = String(d.seenAt);
+        (Array.isArray(d.hidden) ? d.hidden : []).forEach((id) => Prefs.hidden.add(String(id)));
+      }
+    } catch { Prefs.ref = null; }
+  }
+  db.collection("leads").onSnapshot((snap) => {
+    const docs = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id })).filter((l) => l && l.title);
+    if (!Feed.known) {
+      Feed.known = new Set(docs.map((d) => d.id));
+      if (!Prefs.seenAt) {
+        // First visit: everything already here counts as seen; later arrivals get "New"
+        const newest = docs.reduce((m, d) => Math.max(m, ts(d.found)), 0);
+        Prefs.seenAt = new Date(newest || Date.now()).toISOString();
+        savePrefs();
+      }
+      Prefs.baseline = Prefs.seenAt;
+    } else {
+      const fresh = docs.filter((d) => !Feed.known.has(d.id));
+      fresh.forEach((d) => Feed.known.add(d.id));
+      const reading = !$("#sheet-feed").hidden && window.scrollY > $("#feedList").offsetTop + 120;
+      if (fresh.length && reading) fresh.forEach((d) => Feed.held.add(d.id));
+      else if (fresh.length) toast(fresh.length === 1 ? "1 new ad just arrived" : fresh.length + " new ads just arrived");
+    }
+    Feed.all = docs;
+    Feed.state = "ready";
+    renderFeed(); scheduleSeen();
+  }, () => { Feed.state = Feed.all.length ? "ready" : "offline"; renderFeed(); });
+  try {
+    db.doc("meta/feed").onSnapshot((snap) => {
+      Feed.meta = snap.exists ? snap.data() : null;
+      renderFeedStatus(); renderFeedSide();
+    }, () => { /* status line falls back to the default schedule */ });
+  } catch { /* status line falls back to the default schedule */ }
+  if (owner) { Feed.mcp = await platform("mcp"); renderFeedStatus(); }
+}
 
-function renderLeads() {
-  const list = $("#leadsList"), empty = $("#leadsEmpty");
-  const all = Leads.list.filter((l) => l && l.title);
-  const regions = ["all", ...new Set(all.map((l) => l.region).filter(Boolean))];
-  const famBox = $("#leadFam");
-  famBox.replaceChildren(...FAMILIES.filter((f) => f.id === "all" || all.some((l) => l.family === f.id)).map((f) => {
-    const n = f.id === "all" ? all.length : all.filter((l) => l.family === f.id).length;
-    return h("button", { type: "button", "aria-pressed": String(Leads.fam === f.id), text: f.name + " " + n,
-      onclick: () => { Leads.fam = f.id; renderLeads(); } });
-  }));
-  const regBox = $("#leadRegion");
-  regBox.replaceChildren(...(regions.length > 2 ? regions : []).map((r) =>
-    h("button", { type: "button", "aria-pressed": String(Leads.region === r), text: r === "all" ? "All areas" : r,
-      onclick: () => { Leads.region = r; renderLeads(); } })));
+/* ----- schedule & status ----- */
+function feedTimes() {
+  const m = Feed.meta || {};
+  return Array.isArray(m.times) && m.times.length ? m.times.map(String) : ["06:52", "12:52"];
+}
+function nextCheck() {
+  const off = Number((Feed.meta || {}).utcOffset) || 10; // Brisbane is UTC+10 all year
+  const nowLocal = new Date(Date.now() + off * 3600e3);
+  let best = 0;
+  for (let d = 0; d < 2; d++) for (const t of feedTimes()) {
+    const [hh, mm] = t.split(":").map(Number);
+    const at = Date.UTC(nowLocal.getUTCFullYear(), nowLocal.getUTCMonth(), nowLocal.getUTCDate() + d, hh, mm) - off * 3600e3;
+    if (at > Date.now() && (!best || at < best)) best = at;
+  }
+  return best;
+}
+function fmtClock(t) {
+  const d = new Date(t);
+  const time = d.toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit" });
+  if (d.toDateString() === new Date().toDateString()) return "at " + time;
+  if (d.toDateString() === new Date(Date.now() + 864e5).toDateString()) return "tomorrow at " + time;
+  return fmtDate(isoDate(d)) + " at " + time;
+}
+function scheduleText() {
+  return feedTimes().map((t) => {
+    const [hh, mm] = t.split(":").map(Number);
+    return ((hh % 12) || 12) + ":" + pad(mm) + (hh < 12 ? " am" : " pm");
+  }).join(" and ");
+}
+function feedRunning() {
+  const m = Feed.meta || {};
+  const started = m.status === "running" && Date.now() - ts(m.runStarted) < 45 * 60e3;
+  const asked = Feed.localRunAt && Date.now() - Feed.localRunAt < 20 * 60e3 && ts(m.lastRun) < Feed.localRunAt;
+  return Boolean(started || asked);
+}
 
-  $("#tbLeads").textContent = Leads.state === "ready" ? String(all.length) : "–";
-  $("#leadsBadge").replaceChildren(all.length ? h("span", { class: "badge-n", text: all.length }) : "");
+function renderFeedStatus() {
+  const box = $("#feedStatus");
+  const m = Feed.meta || {};
+  const running = feedRunning();
+  const failed = !running && m.status === "error";
+  const next = nextCheck();
+  const nextTxt = next ? "Next check " + fmtClock(next) : "Checks twice a day";
+  let head, sub;
+  if (Feed.state === "offline") { head = "Feed offline"; sub = "Open this page on claude.ai to see new ads as they're found."; }
+  else if (running) { head = "Checking the job boards now"; sub = "New ads will appear here by themselves in a few minutes."; }
+  else if (failed) { head = "The last check hit a problem"; sub = (m.note ? m.note + " " : "") + nextTxt + "."; }
+  else if (m.lastRun) {
+    const added = Number(m.added) || 0;
+    head = "Live · updated " + relTime(m.lastRun);
+    sub = (added ? added + (added === 1 ? " new ad" : " new ads") + " last check. " : "No new ads last check. ") + nextTxt + ".";
+  } else { head = "Live feed"; sub = nextTxt + "."; }
+  box.replaceChildren(h("div", { class: "fs-text" },
+    h("div", { class: "live" + (running ? " running" : failed ? " error" : "") }, h("i", { "aria-hidden": "true" }), head),
+    h("div", { class: "sub", text: sub })));
+  if (Feed.mcp && m.triggerId && Feed.state === "ready") {
+    const recent = ts(m.lastRun) && Date.now() - ts(m.lastRun) < 20 * 60e3;
+    const cooling = Date.now() < Feed.cooldownUntil;
+    const label = Feed.checking ? "Starting…" : running ? "Checking…" : recent ? "Checked recently" : cooling ? "Try again soon" : "Check now";
+    box.append(h("button", { type: "button", class: "btn small", disabled: Feed.checking || running || recent || cooling, text: label, onclick: checkNow }));
+  }
+  if (Feed.checkMsg) box.append(h("div", { class: "check-msg", text: Feed.checkMsg }));
+}
 
-  const shown = all.filter((l) => (Leads.fam === "all" || l.family === Leads.fam) && (Leads.region === "all" || l.region === Leads.region))
-    .sort((a, b) => leadSortKey(a) - leadSortKey(b));
+async function checkNow() {
+  const m = Feed.meta || {};
+  if (!Feed.mcp || !m.triggerId || Feed.checking) return;
+  Feed.checking = true; Feed.checkMsg = ""; renderFeedStatus();
+  try {
+    await Feed.mcp.callTool("Claude Code Remote", "fire_trigger", { trigger_id: String(m.triggerId) });
+    Feed.localRunAt = Date.now();
+    Feed.checkMsg = "Check started. New ads will appear here in about 5 to 10 minutes.";
+  } catch (e) {
+    Feed.checkMsg = checkError(e);
+  } finally {
+    Feed.checking = false; renderFeedStatus();
+  }
+}
+function checkError(e) {
+  const code = e && e.code;
+  const next = nextCheck();
+  const later = next ? " The next automatic check is " + fmtClock(next) + "." : "";
+  if (code === "server_not_connected" || code === "selection_required") return "To check on demand, add the Claude Code Remote connector in claude.ai Settings → Connectors." + later;
+  if (code === "needs_reauth") return "Reconnect Claude Code Remote in claude.ai Settings → Connectors, then try again." + later;
+  if (code === "not_in_manifest" || code === "not_granted" || code === "consent_required") return "This page isn't allowed to start checks. You can allow it in the page's permissions." + later;
+  if (code === "blocked_by_policy" || code === "approval_required") return "Your account settings block starting checks from this page." + later;
+  if (code === "tool_error") return "Claude couldn't start the check: " + (e.message || "no reason given") + "." + later;
+  if (code === "server_unavailable" || code === "upstream_error") {
+    Feed.cooldownUntil = Date.now() + 10 * 60e3;
+    return "Couldn't confirm the check started. It may still be running, so wait 10 minutes before trying again." + later;
+  }
+  return "Couldn't start a check." + later;
+}
 
-  const checked = all.map((l) => l.checked).filter(Boolean).sort().pop();
-  $("#leadsMeta").textContent = Leads.state === "ready" && all.length
-    ? "Found by Claude" + (checked ? ", last checked " + fmtDate(checked) : "") + ". Ads close quickly, so open each one before you apply. Ask Claude in your chat to refresh this list."
-    : "Openings found across SEEK, Indeed, LinkedIn, Jora and builder careers pages.";
+/* ----- feed list ----- */
+function renderFeedBadge() {
+  const n = Feed.state === "ready" ? unreadCount() : 0;
+  $("#feedBadge").replaceChildren(n ? h("span", { class: "badge-n", text: n }) : "");
+  $("#tbLeads").textContent = Feed.state === "ready" ? String(Feed.all.filter((l) => !isStale(l)).length) : "–";
+}
 
-  list.replaceChildren();
-  empty.hidden = true;
-  if (Leads.state === "loading") { empty.hidden = false; empty.replaceChildren(h("b", { text: "Loading leads" }), "Fetching the latest openings…"); return; }
-  if (Leads.state === "offline") {
+function renderFeed() {
+  renderFeedStatus(); renderFeedBadge(); renderFeedSide();
+  const list = $("#feedList"), empty = $("#feedEmpty"), more = $("#feedMore");
+  const live = Feed.all.filter((l) => !isStale(l) && !Prefs.hidden.has(l.id));
+  $("#feedFilters").replaceChildren(h("div", { class: "seg wrap" },
+    FAMILIES.filter((f) => f.id === "all" || live.some((l) => l.family === f.id)).map((f) => {
+      const n = f.id === "all" ? live.length : live.filter((l) => l.family === f.id).length;
+      return h("button", { type: "button", "aria-pressed": String(Feed.fam === f.id), text: f.name + " " + n,
+        onclick: () => { Feed.fam = f.id; renderFeed(); } });
+    })));
+  $("#newPill").hidden = !Feed.held.size;
+  $("#newPillBtn").textContent = "↑ " + Feed.held.size + (Feed.held.size === 1 ? " new ad" : " new ads");
+
+  list.replaceChildren(); more.replaceChildren(); empty.hidden = true;
+  if (Feed.state === "loading") { empty.hidden = false; empty.replaceChildren(h("b", { text: "Loading the feed" }), "Fetching the latest ads…"); return; }
+  if (Feed.state === "offline") {
     empty.hidden = false;
-    empty.replaceChildren(h("b", { text: "Leads live in the published page" }), "Open this page on claude.ai to see the openings Claude has found. Everything else here works offline.");
+    empty.replaceChildren(h("b", { text: "The feed lives in the published page" }), "Open this page on claude.ai to see new ads as Claude finds them. Search, Employers and Ad check all work here.");
     return;
   }
+  const shown = Feed.all.filter((l) => !Feed.held.has(l.id)
+      && (Feed.showOld || !isStale(l)) && (Feed.showHidden || !Prefs.hidden.has(l.id))
+      && (Feed.fam === "all" || l.family === Feed.fam)).sort(feedSort);
   if (!shown.length) {
     empty.hidden = false;
-    empty.replaceChildren(h("b", { text: all.length ? "No leads match" : "No leads yet" }), all.length ? "Try another role family or area." : "Ask Claude in your chat to find current openings. They will appear here.");
-    return;
+    empty.replaceChildren(h("b", { text: Feed.all.length ? "Nothing in this filter" : "No ads yet" }),
+      Feed.all.length ? "Try another role family." : "The next check will post new ads here.");
   }
   const tracked = new Set(Tracker.jobs.map((j) => j.leadId).filter(Boolean));
-  for (const l of shown) list.append(leadCard(l, tracked.has(l.id)));
+  let day = "";
+  for (const l of shown) {
+    const label = dayLabel(l.found);
+    if (label !== day) { day = label; list.append(h("h3", { class: "day", text: label })); }
+    list.append(postCard(l, tracked.has(l.id)));
+  }
+  const oldN = Feed.all.filter(isStale).length;
+  const hidN = Feed.all.filter((l) => Prefs.hidden.has(l.id)).length;
+  if (oldN) more.append(h("button", { type: "button", class: "btn small", text: Feed.showOld ? "Hide older ads" : "Show " + oldN + " older ads",
+    onclick: () => { Feed.showOld = !Feed.showOld; renderFeed(); } }));
+  if (hidN) more.append(h("button", { type: "button", class: "btn small", text: Feed.showHidden ? "Hide dismissed ads" : "Show " + hidN + " dismissed",
+    onclick: () => { Feed.showHidden = !Feed.showHidden; renderFeed(); } }));
 }
 
-function leadCard(l, isTracked) {
-  const ad = safeUrl(l.url);
-  const seenAt = safeUrl(l.seenAt);
+function initials(name) {
+  if (!name || /not named|not shown|^recruiter|^employer|^residential builder|^architecture practice/i.test(name)) return "?";
+  const w = name.replace(/\(.*?\)/g, " ").replace(/\b(the|pty|ltd)\b/gi, " ").trim().split(/\s+/).filter(Boolean);
+  return ((w[0] || "?")[0] + (w[1] ? w[1][0] : "")).toUpperCase();
+}
+
+function postCard(l, isTracked) {
+  const ad = safeUrl(l.url), seenAt = safeUrl(l.seenAt);
   const named = l.company && !/recruiter|not (shown|named)|confidential|^employer/i.test(l.company);
   const core = l.title.split(/\s[–—-]\s|\(/)[0].replace(/["]/g, "").trim();
   const seekFind = "https://au.seek.com/jobs?" + qs({ keywords: '"' + core + '"' + (named ? " " + l.company : ""), where: l.seekWhere || "All Brisbane QLD" });
-  const age = daysAgo(l.posted);
-  const whenTxt = l.posted && /^\d{4}-\d{2}-\d{2}/.test(l.posted)
-    ? "Posted " + fmtDate(l.posted) + (age != null ? " · " + (age <= 0 ? "today" : age + "d ago") : "")
-    : (l.postedNote || "Posting date not confirmed");
-  const pill = l.status === "verified" ? h("span", { class: "pill ok", text: "Checked open" })
-    : h("span", { class: "pill seen", text: "Seen in search · verify" });
+  const isNew = Prefs.baseline != null && ts(l.found) > ts(Prefs.baseline);
+  const hidden = Prefs.hidden.has(l.id);
+  const postedTxt = /^\d{4}-\d{2}-\d{2}/.test(l.posted || "") ? "Posted " + fmtDate(l.posted) : (l.postedNote || "Posting date not confirmed");
   const trackBtn = h("button", { type: "button", class: "btn small" + (isTracked ? "" : " primary"), disabled: isTracked, text: isTracked ? "Tracking ✓" : "Track" });
   trackBtn.addEventListener("click", async () => {
     trackBtn.disabled = true;
     const ok = await Tracker.add({ title: l.title, company: l.company || "", area: l.area || "", url: ad || seenAt || "", salary: l.salary || "", source: l.source || "", stage: "saved", leadId: l.id, notes: l.note || "" });
     if (ok) toast("Added to My applications"); else trackBtn.disabled = false;
   });
-  const meta = [l.area, l.workType].filter(Boolean);
-  return h("article", { class: "lead" },
-    h("div", null,
-      h("h3", null, ad ? h("a", { href: ad, target: "_blank", rel: "noopener", text: l.title }) : l.title),
-      h("div", { class: "co", text: l.company || "Employer not named" }),
-      h("div", { class: "meta" }, meta.map((m) => h("span", { text: m })), l.salary ? h("span", { class: "sal", text: l.salary }) : null),
-      l.note ? h("p", { class: "note", text: l.note }) : null),
-    h("div", { class: "side" },
-      h("span", { class: "when", text: whenTxt }), pill,
+  const hideBtn = h("button", { type: "button", class: "btn small ghost", text: hidden ? "Restore" : "Not for me", onclick: () => {
+    if (hidden) Prefs.hidden.delete(l.id); else Prefs.hidden.add(l.id);
+    savePrefs(); renderFeed();
+    if (!hidden) toast("Hidden. It's under “dismissed” at the end of the feed.");
+  } });
+  const chips = [
+    l.salary ? h("span", { class: "kv sal", text: l.salary }) : null,
+    l.workType ? h("span", { class: "kv", text: l.workType }) : null,
+    l.source ? h("span", { class: "kv", text: l.source }) : null,
+  ].filter(Boolean);
+  return h("article", { class: "post fam-" + (l.family || "other") + (isStale(l) || hidden ? " dim" : "") },
+    h("div", { class: "post-h" },
+      h("div", { class: "mono", "aria-hidden": "true", text: initials(l.company) }),
+      h("div", { class: "post-who" }, h("b", { text: l.company || "Employer not named" }), h("span", { text: l.area || "" })),
+      h("div", { class: "post-time" },
+        isNew ? h("span", { class: "pill new", text: "New" }) : null,
+        l.found ? h("time", { datetime: l.found, title: "Found " + new Date(ts(l.found)).toLocaleString("en-AU"), text: relTime(l.found, true) }) : null)),
+    h("h4", null, ad ? h("a", { href: ad, target: "_blank", rel: "noopener", text: l.title }) : l.title),
+    chips.length ? h("div", { class: "chips2" }, chips) : null,
+    l.note ? h("p", { text: l.note }) : null,
+    h("div", { class: "post-f" },
+      h("span", { class: "when", text: postedTxt + (l.status === "verified" ? " · checked open" : " · seen in search, check it's open") }),
       h("div", { class: "acts" },
         ad ? h("a", { class: "btn small", href: ad, target: "_blank", rel: "noopener", text: "Open ad ↗" }) : null,
         h("a", { class: "btn small", href: seekFind, target: "_blank", rel: "noopener", text: "Find on SEEK ↗" }),
         !ad && seenAt ? h("a", { class: "btn small", href: seenAt, target: "_blank", rel: "noopener", text: "Where seen ↗" }) : null,
-        trackBtn)));
+        trackBtn, hideBtn)));
+}
+
+function renderFeedSide() {
+  const side = $("#feedSide");
+  const m = Feed.meta || {};
+  const live = Feed.all.filter((l) => !isStale(l));
+  const week = live.filter((l) => Date.now() - ts(l.found) < 7 * 864e5).length;
+  const count = (id) => Tracker.jobs.filter((j) => (j.stage || "saved") === id).length;
+  const due = Tracker.jobs.filter(followDue).length;
+  const o = { loc: LOCS[0], radius: 50, days: 3, wt: "any", excl: [] };
+  const quick = [
+    ["SEEK · Architectural Drafting category", MORE[0].url(o)],
+    ["SEEK · Archicad", BOARDS[0].url("archicad", o)],
+    ["SEEK · design manager", BOARDS[0].url('"design manager"', o)],
+    ["LinkedIn · Archicad", BOARDS[2].url("archicad", o)],
+    ["Indeed · draftsperson", BOARDS[1].url("draftsperson", o)],
+  ];
+  side.replaceChildren(
+    h("div", { class: "side-box" },
+      h("h2", { text: "How this feed updates" }),
+      h("p", { text: "Twice a day, at " + scheduleText() + " Brisbane time, Claude searches SEEK, Indeed, LinkedIn, Jora, Hatch, LiveHire, SmartJobs and builders' careers pages. New Brisbane and South East Queensland ads are posted here." }),
+      h("dl", { class: "mini" },
+        h("div", null, h("dt", { text: "Last check" }), h("dd", { text: m.lastRun ? relTime(m.lastRun) : "–" })),
+        h("div", null, h("dt", { text: "New this week" }), h("dd", { text: Feed.state === "ready" ? week : "–" })),
+        h("div", null, h("dt", { text: "Live ads" }), h("dd", { text: Feed.state === "ready" ? live.length : "–" })))),
+    h("div", { class: "side-box" },
+      h("h2", { text: "My applications" }),
+      h("dl", { class: "mini" }, STAGES.slice(0, 3).map((s) => h("div", null, h("dt", { text: s.name }), h("dd", { text: count(s.id) })))),
+      due ? h("p", { class: "due-note", text: due + (due === 1 ? " follow-up is due" : " follow-ups are due") }) : null,
+      h("button", { type: "button", class: "btn small", text: "Open my applications", onclick: () => { showSheet("tracker"); window.scrollTo(0, 0); } })),
+    h("div", { class: "side-box" },
+      h("h2", { text: "Newest on the boards" }),
+      h("p", { class: "hint", text: "Brisbane ads from the last 3 days, newest first." }),
+      h("div", { class: "quick" }, quick.map(([t, u]) => h("a", { href: u, target: "_blank", rel: "noopener", text: t + " ↗" })))));
+}
+
+function bindFeed() {
+  $("#newPillBtn").addEventListener("click", () => {
+    Feed.held.clear(); renderFeed();
+    $("#sheet-feed").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) { renderFeedStatus(); scheduleSeen(); } });
+  // keep "2h ago" style times current without rebuilding the list
+  setInterval(() => {
+    if (Feed.state !== "ready") return;
+    $$("#feedList time").forEach((t) => { t.textContent = relTime(t.getAttribute("datetime"), true); });
+    renderFeedStatus();
+  }, 60000);
 }
 
 /* =====================================================================
@@ -1577,12 +1906,12 @@ function boot() {
   $("#tbEmployers").textContent = String(DIRECTORY.filter((d) => !["industry", "recruiters"].includes(d.c)).length);
   renderGroups(); renderControls(); renderSearch(); bindSearch();
   Tracker.loadLocal(); renderTracker(); bindTracker();
-  renderLeads();
+  renderFeed(); bindFeed();
   renderDirectory(); bindDirectory();
   bindAdCheck(); renderMySkills(); renderFit();
   bindSheets();
   Tracker.connect();
-  connectLeads();
+  connectFeed();
   connectAI();
 }
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
