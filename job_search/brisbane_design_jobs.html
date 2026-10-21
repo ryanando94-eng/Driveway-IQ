@@ -1320,7 +1320,7 @@ const FAMILIES = [
   { id: "management", name: "Management" }, { id: "product", name: "Product" }, { id: "bim", name: "BIM" },
 ];
 const Feed = {
-  all: [], known: null, held: new Set(), state: "loading", fam: "all", meta: null,
+  all: [], known: null, held: new Set(), state: "loading", fam: "all", meta: null, db: null, owner: false,
   showOld: false, showHidden: false, mcp: null, checking: false, checkMsg: "", localRunAt: 0, cooldownUntil: 0,
 };
 // Per-viewer feed state: when you last looked (for "New" markers) and ads you dismissed
@@ -1347,7 +1347,16 @@ function dayLabel(iso) {
   if (d.toDateString() === yest.toDateString()) return "Yesterday";
   return d.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" });
 }
-const isStale = (l) => l.stale === true || (/^\d{4}-\d{2}-\d{2}/.test(l.posted || "") && daysAgo(l.posted) > 45);
+// Days since Claude last saw the ad in search results (falls back to when it was first found)
+function seenDays(l) {
+  if (/^\d{4}-\d{2}-\d{2}/.test(l.lastSeen || "")) return daysAgo(l.lastSeen);
+  const t = ts(l.found);
+  return t ? Math.floor((Date.now() - t) / 864e5) : null;
+}
+// Ads close fast: treat an ad as old once it's 30 days since posting or 14 days since Claude last saw it
+const isStale = (l) => l.stale === true
+  || (/^\d{4}-\d{2}-\d{2}/.test(l.posted || "") && daysAgo(l.posted) > 30)
+  || (seenDays(l) != null && seenDays(l) > 14);
 const unreadCount = () => Feed.all.filter((l) => !isStale(l) && !Prefs.hidden.has(l.id) && ts(l.found) > ts(Prefs.seenAt)).length;
 const feedSort = (a, b) => (ts(b.found) - ts(a.found)) || ((Number(b.score) || 0) - (Number(a.score) || 0)) || ((Number(a.rank) || 999) - (Number(b.rank) || 999));
 
@@ -1372,6 +1381,7 @@ function scheduleSeen() {
 async function connectFeed() {
   const { db, uid, owner } = await me();
   if (!db) { Feed.state = "offline"; renderFeed(); return; }
+  Feed.db = db; Feed.owner = owner;
   if (uid) {
     try {
       Prefs.ref = db.doc("data/users/" + uid + "/prefs");
@@ -1384,7 +1394,8 @@ async function connectFeed() {
     } catch { Prefs.ref = null; }
   }
   db.collection("leads").onSnapshot((snap) => {
-    const docs = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id })).filter((l) => l && l.title);
+    const docs = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id }))
+      .filter((l) => l && l.title && safeUrl(l.url) && l.gone !== true);
     if (!Feed.known) {
       Feed.known = new Set(docs.map((d) => d.id));
       if (!Prefs.seenAt) {
@@ -1565,17 +1576,23 @@ function initials(name) {
 }
 
 function postCard(l, isTracked) {
-  const ad = safeUrl(l.url), seenAt = safeUrl(l.seenAt);
+  const ad = safeUrl(l.url);
   const named = l.company && !/recruiter|not (shown|named)|confidential|^employer/i.test(l.company);
   const core = l.title.split(/\s[–—-]\s|\(/)[0].replace(/["]/g, "").trim();
-  const seekFind = "https://au.seek.com/jobs?" + qs({ keywords: '"' + core + '"' + (named ? " " + l.company : ""), where: l.seekWhere || "All Brisbane QLD" });
+  // Backup if the ad link breaks: a web search for the exact title (plus employer) finds reposts on other boards
+  const findUrl = "https://www.google.com/search?" + qs({ q: '"' + core + '" ' + (named ? '"' + l.company.replace(/["]/g, "") + '" ' : "") + "job " + (l.area || "Brisbane") });
   const isNew = Prefs.baseline != null && ts(l.found) > ts(Prefs.baseline);
   const hidden = Prefs.hidden.has(l.id);
-  const postedTxt = /^\d{4}-\d{2}-\d{2}/.test(l.posted || "") ? "Posted " + fmtDate(l.posted) : (l.postedNote || "Posting date not confirmed");
-  const trackBtn = h("button", { type: "button", class: "btn small" + (isTracked ? "" : " primary"), disabled: isTracked, text: isTracked ? "Tracking ✓" : "Track" });
+  const days = seenDays(l);
+  const when = [
+    /^\d{4}-\d{2}-\d{2}/.test(l.posted || "") ? "Posted " + fmtDate(l.posted) : (ts(l.found) ? "Found " + fmtDate(isoDate(new Date(ts(l.found)))) : ""),
+    days == null ? "" : days <= 0 ? "seen today" : days === 1 ? "seen yesterday" : "last seen " + days + " days ago",
+    l.source ? "via " + l.source : "",
+  ].filter(Boolean).join(" · ");
+  const trackBtn = h("button", { type: "button", class: "btn small", disabled: isTracked, text: isTracked ? "Tracking ✓" : "Track" });
   trackBtn.addEventListener("click", async () => {
     trackBtn.disabled = true;
-    const ok = await Tracker.add({ title: l.title, company: l.company || "", area: l.area || "", url: ad || seenAt || "", salary: l.salary || "", source: l.source || "", stage: "saved", leadId: l.id, notes: l.note || "" });
+    const ok = await Tracker.add({ title: l.title, company: l.company || "", area: l.area || "", url: ad || "", salary: l.salary || "", source: l.source || "", stage: "saved", leadId: l.id, notes: l.note || "" });
     if (ok) toast("Added to My applications"); else trackBtn.disabled = false;
   });
   const hideBtn = h("button", { type: "button", class: "btn small ghost", text: hidden ? "Restore" : "Not for me", onclick: () => {
@@ -1583,10 +1600,30 @@ function postCard(l, isTracked) {
     savePrefs(); renderFeed();
     if (!hidden) toast("Hidden. It's under “dismissed” at the end of the feed.");
   } });
+  // Owner only: an ad that has closed or vanished comes off the feed for everyone, and Claude won't add it again
+  let goneBtn = null;
+  if (Feed.owner && Feed.db) {
+    let armed = false, timer = null;
+    goneBtn = h("button", { type: "button", class: "btn small ghost danger", text: "Ad's gone", title: "Remove this ad from the feed for good" });
+    goneBtn.addEventListener("click", async () => {
+      if (!armed) {
+        armed = true; goneBtn.textContent = "Tap again to remove";
+        timer = setTimeout(() => { armed = false; goneBtn.textContent = "Ad's gone"; }, 4000);
+        return;
+      }
+      clearTimeout(timer); goneBtn.disabled = true;
+      try {
+        await Feed.db.doc("leads/" + l.id).update({ gone: true, goneAt: new Date().toISOString() });
+        toast("Removed. Claude won't add this ad again.");
+      } catch {
+        goneBtn.disabled = false; armed = false; goneBtn.textContent = "Ad's gone";
+        toast("Couldn't remove it just now. Try again in a moment.");
+      }
+    });
+  }
   const chips = [
     l.salary ? h("span", { class: "kv sal", text: l.salary }) : null,
     l.workType ? h("span", { class: "kv", text: l.workType }) : null,
-    l.source ? h("span", { class: "kv", text: l.source }) : null,
   ].filter(Boolean);
   return h("article", { class: "post fam-" + (l.family || "other") + (isStale(l) || hidden ? " dim" : "") },
     h("div", { class: "post-h" },
@@ -1595,16 +1632,15 @@ function postCard(l, isTracked) {
       h("div", { class: "post-time" },
         isNew ? h("span", { class: "pill new", text: "New" }) : null,
         l.found ? h("time", { datetime: l.found, title: "Found " + new Date(ts(l.found)).toLocaleString("en-AU"), text: relTime(l.found, true) }) : null)),
-    h("h4", null, ad ? h("a", { href: ad, target: "_blank", rel: "noopener", text: l.title }) : l.title),
+    h("h4", null, h("a", { href: ad, target: "_blank", rel: "noopener", text: l.title })),
     chips.length ? h("div", { class: "chips2" }, chips) : null,
     l.note ? h("p", { text: l.note }) : null,
     h("div", { class: "post-f" },
-      h("span", { class: "when", text: postedTxt + (l.status === "verified" ? " · checked open" : " · seen in search, check it's open") }),
+      h("span", { class: "when", text: when }),
       h("div", { class: "acts" },
-        ad ? h("a", { class: "btn small", href: ad, target: "_blank", rel: "noopener", text: "Open ad ↗" }) : null,
-        h("a", { class: "btn small", href: seekFind, target: "_blank", rel: "noopener", text: "Find on SEEK ↗" }),
-        !ad && seenAt ? h("a", { class: "btn small", href: seenAt, target: "_blank", rel: "noopener", text: "Where seen ↗" }) : null,
-        trackBtn, hideBtn)));
+        h("a", { class: "btn small primary", href: ad, target: "_blank", rel: "noopener", text: "Open ad ↗" }),
+        h("a", { class: "btn small", href: findUrl, target: "_blank", rel: "noopener", title: "Search the web for this ad, in case the link has changed", text: "Search for it ↗" }),
+        trackBtn, hideBtn, goneBtn)));
 }
 
 function renderFeedSide() {
@@ -1625,7 +1661,7 @@ function renderFeedSide() {
   side.replaceChildren(
     h("div", { class: "side-box" },
       h("h2", { text: "How this feed updates" }),
-      h("p", { text: "Twice a day, at " + scheduleText() + " Brisbane time, Claude searches SEEK, Indeed, LinkedIn, Jora, Hatch, LiveHire, SmartJobs and builders' careers pages. New Brisbane and South East Queensland ads are posted here." }),
+      h("p", { text: "Twice a day, at " + scheduleText() + " Brisbane time, Claude searches SEEK, LinkedIn, Indeed, recruiters such as Hays and Marble, and builders' careers pages. Only ads with a link to the job itself are posted here, and ads Claude stops seeing drop off after two weeks." }),
       h("dl", { class: "mini" },
         h("div", null, h("dt", { text: "Last check" }), h("dd", { text: m.lastRun ? relTime(m.lastRun) : "–" })),
         h("div", null, h("dt", { text: "New this week" }), h("dd", { text: Feed.state === "ready" ? week : "–" })),
