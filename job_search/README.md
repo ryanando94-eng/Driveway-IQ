@@ -24,7 +24,7 @@ Brisbane time. Each run starts a fresh Claude session that:
 
 * searches for single-ad pages on SEEK, LinkedIn, Indeed, Hays, Marble, Employment Hero, LiveHire, SmartJobs and builders' careers sites;
 * adds only ads it has a direct link for, without duplicates;
-* marks an ad as old once it's 30 days since posting or 10 days since Claude last saw it, and clears old ads after 30 days;
+* deletes an ad once it's 30 days since posting or 10 days since Claude last saw it, so the feed only shows live ads;
 * never adds back an ad you marked as gone;
 * records the run in `meta/feed`.
 

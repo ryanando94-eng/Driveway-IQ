@@ -1321,7 +1321,7 @@ const FAMILIES = [
 ];
 const Feed = {
   all: [], known: null, held: new Set(), state: "loading", fam: "all", meta: null, db: null, owner: false,
-  showOld: false, showHidden: false, mcp: null, checking: false, checkMsg: "", localRunAt: 0, cooldownUntil: 0,
+  showHidden: false, mcp: null, checking: false, checkMsg: "", localRunAt: 0, cooldownUntil: 0,
 };
 // Per-viewer feed state: when you last looked (for "New" markers) and ads you dismissed
 const Prefs = { seenAt: local.get("feedSeenAt", ""), hidden: new Set(local.get("feedHidden", [])), baseline: null, ref: null, queue: Promise.resolve() };
@@ -1353,10 +1353,11 @@ function seenDays(l) {
   const t = ts(l.found);
   return t ? Math.floor((Date.now() - t) / 864e5) : null;
 }
-// Ads close fast: treat an ad as old once it's 30 days since posting or 14 days since Claude last saw it
+// Ads close fast: an ad is no longer live 30 days after posting or 10 days after Claude last saw it.
+// The feed only ever shows live ads.
 const isStale = (l) => l.stale === true
   || (/^\d{4}-\d{2}-\d{2}/.test(l.posted || "") && daysAgo(l.posted) > 30)
-  || (seenDays(l) != null && seenDays(l) > 14);
+  || (seenDays(l) != null && seenDays(l) > 10);
 const unreadCount = () => Feed.all.filter((l) => !isStale(l) && !Prefs.hidden.has(l.id) && ts(l.found) > ts(Prefs.seenAt)).length;
 const feedSort = (a, b) => (ts(b.found) - ts(a.found)) || ((Number(b.score) || 0) - (Number(a.score) || 0)) || ((Number(a.rank) || 999) - (Number(b.rank) || 999));
 
@@ -1547,7 +1548,7 @@ function renderFeed() {
     return;
   }
   const shown = Feed.all.filter((l) => !Feed.held.has(l.id)
-      && (Feed.showOld || !isStale(l)) && (Feed.showHidden || !Prefs.hidden.has(l.id))
+      && !isStale(l) && (Feed.showHidden || !Prefs.hidden.has(l.id))
       && (Feed.fam === "all" || l.family === Feed.fam)).sort(feedSort);
   if (!shown.length) {
     empty.hidden = false;
@@ -1561,10 +1562,7 @@ function renderFeed() {
     if (label !== day) { day = label; list.append(h("h3", { class: "day", text: label })); }
     list.append(postCard(l, tracked.has(l.id)));
   }
-  const oldN = Feed.all.filter(isStale).length;
-  const hidN = Feed.all.filter((l) => Prefs.hidden.has(l.id)).length;
-  if (oldN) more.append(h("button", { type: "button", class: "btn small", text: Feed.showOld ? "Hide older ads" : "Show " + oldN + " older ads",
-    onclick: () => { Feed.showOld = !Feed.showOld; renderFeed(); } }));
+  const hidN = Feed.all.filter((l) => Prefs.hidden.has(l.id) && !isStale(l)).length;
   if (hidN) more.append(h("button", { type: "button", class: "btn small", text: Feed.showHidden ? "Hide dismissed ads" : "Show " + hidN + " dismissed",
     onclick: () => { Feed.showHidden = !Feed.showHidden; renderFeed(); } }));
 }
@@ -1625,7 +1623,7 @@ function postCard(l, isTracked) {
     l.salary ? h("span", { class: "kv sal", text: l.salary }) : null,
     l.workType ? h("span", { class: "kv", text: l.workType }) : null,
   ].filter(Boolean);
-  return h("article", { class: "post fam-" + (l.family || "other") + (isStale(l) || hidden ? " dim" : "") },
+  return h("article", { class: "post fam-" + (l.family || "other") + (hidden ? " dim" : "") },
     h("div", { class: "post-h" },
       h("div", { class: "mono", "aria-hidden": "true", text: initials(l.company) }),
       h("div", { class: "post-who" }, h("b", { text: l.company || "Employer not named" }), h("span", { text: l.area || "" })),
@@ -1661,7 +1659,7 @@ function renderFeedSide() {
   side.replaceChildren(
     h("div", { class: "side-box" },
       h("h2", { text: "How this feed updates" }),
-      h("p", { text: "Twice a day, at " + scheduleText() + " Brisbane time, Claude searches SEEK, LinkedIn, Indeed, recruiters such as Hays and Marble, and builders' careers pages. Only ads with a link to the job itself are posted here, and ads Claude stops seeing drop off after two weeks." }),
+      h("p", { text: "Twice a day, at " + scheduleText() + " Brisbane time, Claude searches SEEK, LinkedIn, Indeed, recruiters such as Hays and Marble, and builders' careers pages. Only live ads with a link to the job itself are shown. Ads are removed once Claude stops seeing them." }),
       h("dl", { class: "mini" },
         h("div", null, h("dt", { text: "Last check" }), h("dd", { text: m.lastRun ? relTime(m.lastRun) : "–" })),
         h("div", null, h("dt", { text: "New this week" }), h("dd", { text: Feed.state === "ready" ? week : "–" })),
