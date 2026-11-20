@@ -1584,7 +1584,10 @@ function postCard(l, isTracked) {
   const days = seenDays(l);
   const when = [
     /^\d{4}-\d{2}-\d{2}/.test(l.posted || "") ? "Posted " + fmtDate(l.posted) : (ts(l.found) ? "Found " + fmtDate(isoDate(new Date(ts(l.found)))) : ""),
-    days == null ? "" : days <= 0 ? "seen today" : days === 1 ? "seen yesterday" : "last seen " + days + " days ago",
+    // Claude opens each ad page to confirm it's still advertised; some sites block that check
+    l.status === "verified" && /^\d{4}-\d{2}-\d{2}/.test(l.verifiedAt || "")
+      ? (daysAgo(l.verifiedAt) <= 0 ? "checked open today" : daysAgo(l.verifiedAt) === 1 ? "checked open yesterday" : "checked open " + daysAgo(l.verifiedAt) + " days ago")
+      : "couldn't check it's open: the site blocks automated checks",
     l.source ? "via " + l.source : "",
   ].filter(Boolean).join(" · ");
   const trackBtn = h("button", { type: "button", class: "btn small", disabled: isTracked, text: isTracked ? "Tracking ✓" : "Track" });
