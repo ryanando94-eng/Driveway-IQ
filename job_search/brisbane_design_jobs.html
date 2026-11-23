@@ -1605,11 +1605,11 @@ function postCard(l, isTracked) {
   let goneBtn = null;
   if (Feed.owner && Feed.db) {
     let armed = false, timer = null;
-    goneBtn = h("button", { type: "button", class: "btn small ghost danger", text: "Ad's gone", title: "Remove this ad from the feed for good" });
+    goneBtn = h("button", { type: "button", class: "btn small ghost danger", text: "Remove ad", title: "The ad has closed? Remove it from the feed for good. Claude won't add it back." });
     goneBtn.addEventListener("click", async () => {
       if (!armed) {
         armed = true; goneBtn.textContent = "Tap again to remove";
-        timer = setTimeout(() => { armed = false; goneBtn.textContent = "Ad's gone"; }, 4000);
+        timer = setTimeout(() => { armed = false; goneBtn.textContent = "Remove ad"; }, 4000);
         return;
       }
       clearTimeout(timer); goneBtn.disabled = true;
@@ -1617,7 +1617,7 @@ function postCard(l, isTracked) {
         await Feed.db.doc("leads/" + l.id).update({ gone: true, goneAt: new Date().toISOString() });
         toast("Removed. Claude won't add this ad again.");
       } catch {
-        goneBtn.disabled = false; armed = false; goneBtn.textContent = "Ad's gone";
+        goneBtn.disabled = false; armed = false; goneBtn.textContent = "Remove ad";
         toast("Couldn't remove it just now. Try again in a moment.");
       }
     });
